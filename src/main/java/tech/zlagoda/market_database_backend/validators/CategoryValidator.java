@@ -2,8 +2,6 @@ package tech.zlagoda.market_database_backend.validators;
 
 import tech.zlagoda.market_database_backend.pojos.Category;
 
-import java.math.BigInteger;
-
 public class CategoryValidator {
     public static void validate(Category category) {
         if (category == null) {

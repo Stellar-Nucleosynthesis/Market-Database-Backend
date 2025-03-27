@@ -19,8 +19,8 @@ public class EmployeeValidator {
         if(name == null || name.isEmpty() || name.length() > 50) {
             throw new IllegalArgumentException("Illegal employee name");
         }
-        String surName = employee.getSurname();
-        if(surName == null || surName.isEmpty() || surName.length() > 50) {
+        String surname = employee.getSurname();
+        if(surname == null || surname.isEmpty() || surname.length() > 50) {
             throw new IllegalArgumentException("Illegal employee surname");
         }
         String patronymic = employee.getPatronymic();
@@ -48,7 +48,7 @@ public class EmployeeValidator {
             throw new IllegalArgumentException("Illegal employee date of start");
         }
         String phoneNumber = employee.getPhoneNumber();
-        if(phoneNumber == null || phoneNumber.length() > 13) {
+        if(phoneNumber == null || phoneNumber.isEmpty() || phoneNumber.length() > 13) {
             throw new IllegalArgumentException("Illegal employee phone number");
         }
         String city = employee.getCity();
