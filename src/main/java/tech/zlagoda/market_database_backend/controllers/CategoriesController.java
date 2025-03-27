@@ -5,12 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Category;
-import tech.zlagoda.market_database_backend.pojos.Employee;
 import tech.zlagoda.market_database_backend.repositories.CategoryRepository;
-import tech.zlagoda.market_database_backend.repositories.EmployeesRepository;
 import tech.zlagoda.market_database_backend.security.ManagerCheck;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController

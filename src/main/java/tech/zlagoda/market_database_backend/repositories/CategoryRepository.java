@@ -5,9 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import tech.zlagoda.market_database_backend.pojos.Category;
-import tech.zlagoda.market_database_backend.pojos.Employee;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import static tech.zlagoda.market_database_backend.validators.CategoryValidator.validate;

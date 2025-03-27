@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import tech.zlagoda.market_database_backend.controllers.CategoriesController;
-import tech.zlagoda.market_database_backend.controllers.EmployeesController;
 
 @RestControllerAdvice(assignableTypes = {CategoriesController.class})
 public class CategoriesErrorHandler {
