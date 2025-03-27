@@ -4,21 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Employee {
-    public Employee(String idEmployee, String surname, String name, String patronymic, String role, BigDecimal salary, Date dateOfBirth, Date dateOfStart, String phoneNumber, String city, String street, String zipCode) {
-        this.idEmployee = idEmployee;
-        this.surname = surname;
-        this.name = name;
-        this.patronymic = patronymic;
-        this.role = role;
-        this.salary = salary;
-        this.dateOfBirth = dateOfBirth;
-        this.dateOfStart = dateOfStart;
-        this.phoneNumber = phoneNumber;
-        this.city = city;
-        this.street = street;
-        this.zipCode = zipCode;
-    }
-
     private String idEmployee;
     private String surname;
     private String name;

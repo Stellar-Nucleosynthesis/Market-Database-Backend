@@ -5,7 +5,6 @@ import tech.zlagoda.market_database_backend.pojos.Employee;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class EmployeeValidator {
     public static void validate(Employee employee) {
