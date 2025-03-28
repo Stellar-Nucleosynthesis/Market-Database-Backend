@@ -14,12 +14,12 @@ import static tech.zlagoda.market_database_backend.validators.StoreProductValida
 
 @Repository
 public class StoreProductsRepository {
-    private final JdbcTemplate jdbc;
-
     @Autowired
     StoreProductsRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
+
+    private final JdbcTemplate jdbc;
 
     public void addStoreProduct(StoreProduct storeProduct) {
         validate(storeProduct);

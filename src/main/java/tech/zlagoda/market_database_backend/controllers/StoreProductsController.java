@@ -14,12 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/store-products")
 public class StoreProductsController {
-    private final StoreProductsRepository repository;
-
     @Autowired
     StoreProductsController(StoreProductsRepository repository) {
         this.repository = repository;
     }
+
+    private final StoreProductsRepository repository;
 
     @ManagerCheck
     @PostMapping
