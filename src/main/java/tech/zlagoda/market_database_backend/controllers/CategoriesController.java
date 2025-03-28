@@ -44,7 +44,7 @@ public class CategoriesController {
 
     @ManagerCheck
     @GetMapping("/search")
-    public ResponseEntity<List<Category>> getCategories(@RequestParam(required = false) String categoryName){
-        return ResponseEntity.status(HttpStatus.OK).body(repository.getCategories(categoryName));
+    public ResponseEntity<List<Category>> getCategories(){
+        return ResponseEntity.status(HttpStatus.OK).body(repository.getCategories());
     }
 }

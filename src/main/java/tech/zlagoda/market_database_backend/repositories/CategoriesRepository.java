@@ -38,18 +38,15 @@ public class CategoriesRepository {
         jdbc.update(sql, category.getCategoryName(), category.getCategoryNumber());
     }
 
-    public List<Category> getCategories(String categoryName) {
+    public List<Category> getCategories() {
         RowMapper<Category> categoryRowMapper = (r, i) -> {
             Category category = new Category();
             category.setCategoryNumber(r.getInt("category_number"));
             category.setCategoryName(r.getString("category_name"));
             return category;
         };
-        String sql = "SELECT * FROM Category";
-        if (categoryName != null) {
-            sql += " WHERE category_name = ?";
-            return jdbc.query(sql, categoryRowMapper, categoryName);
-        }
+        String sql = "SELECT * FROM Category" +
+                     "ORDER BY category_name";
         return jdbc.query(sql, categoryRowMapper);
     }
 }

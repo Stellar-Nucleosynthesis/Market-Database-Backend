@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Employee;
 import tech.zlagoda.market_database_backend.repositories.EmployeesRepository;
+import tech.zlagoda.market_database_backend.security.EmployeeCheck;
 import tech.zlagoda.market_database_backend.security.ManagerCheck;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class EmployeesController {
         return ResponseEntity.status(HttpStatus.OK).body(repository.getEmployees(surname, role));
     }
 
-    @ManagerCheck
+    @EmployeeCheck
     @GetMapping("/search/me")
     public ResponseEntity<Employee> getMe(){
         throw new UnsupportedOperationException("Unable to get information about \"me\"");
