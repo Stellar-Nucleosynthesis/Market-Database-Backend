@@ -64,7 +64,7 @@ public class EmployeesRepository {
                 employee.getIdEmployee());
     }
 
-    public List<Employee> getEmployees(String name, String surname) {
+    public List<Employee> getEmployees(String surname, String role) {
         RowMapper<Employee> employeeRowMapper = (r, i) -> {
             Employee employee = new Employee();
             employee.setIdEmployee(r.getString("id_employee"));
@@ -82,16 +82,20 @@ public class EmployeesRepository {
             return employee;
         };
         String sql = "SELECT * FROM Employee";
-        if (name != null && surname != null) {
-            sql += " WHERE empl_name = ? AND empl_surname = ?";
-            return jdbc.query(sql, employeeRowMapper, name, surname);
-        } else if (name != null) {
-            sql += " WHERE empl_name = ?";
-            return jdbc.query(sql, employeeRowMapper, name);
+        if (surname != null && role != null) {
+            sql += " WHERE empl_surname = ? AND empl_role = ?" +
+                    "ORDER BY empl_surname";
+            return jdbc.query(sql, employeeRowMapper, surname, role);
         } else if (surname != null) {
-            sql += " WHERE empl_surname = ?";
+            sql += " WHERE empl_surname = ?" +
+                    "ORDER BY empl_surname";
             return jdbc.query(sql, employeeRowMapper, surname);
+        } else if (role != null) {
+            sql += " WHERE empl_role = ?" +
+                    "ORDER BY empl_surname";
+            return jdbc.query(sql, employeeRowMapper, role);
         }
+        sql += " ORDER BY empl_surname";
         return jdbc.query(sql, employeeRowMapper);
     }
 }

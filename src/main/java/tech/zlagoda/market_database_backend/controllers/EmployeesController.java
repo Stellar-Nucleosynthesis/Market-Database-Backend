@@ -45,9 +45,9 @@ public class EmployeesController {
     @ManagerCheck
     @GetMapping("/search")
     public ResponseEntity<List<Employee>> getEmployees(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String surname){
-        return ResponseEntity.status(HttpStatus.OK).body(repository.getEmployees(name, surname));
+            @RequestParam(required = false) String surname,
+            @RequestParam(required = false) String role){
+        return ResponseEntity.status(HttpStatus.OK).body(repository.getEmployees(surname, role));
     }
 
     @ManagerCheck
