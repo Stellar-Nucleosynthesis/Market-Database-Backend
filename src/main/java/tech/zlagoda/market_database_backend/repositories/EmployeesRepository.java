@@ -83,15 +83,15 @@ public class EmployeesRepository {
         };
         String sql = "SELECT * FROM Employee";
         if (surname != null && role != null) {
-            sql += " WHERE empl_surname = ? AND empl_role = ?" +
+            sql += " WHERE empl_surname = ? AND empl_role = ? " +
                     "ORDER BY empl_surname";
             return jdbc.query(sql, employeeRowMapper, surname, role);
         } else if (surname != null) {
-            sql += " WHERE empl_surname = ?" +
+            sql += " WHERE empl_surname = ? " +
                     "ORDER BY empl_surname";
             return jdbc.query(sql, employeeRowMapper, surname);
         } else if (role != null) {
-            sql += " WHERE empl_role = ?" +
+            sql += " WHERE empl_role = ? " +
                     "ORDER BY empl_surname";
             return jdbc.query(sql, employeeRowMapper, role);
         }

@@ -45,7 +45,7 @@ public class CategoriesRepository {
             category.setCategoryName(r.getString("category_name"));
             return category;
         };
-        String sql = "SELECT * FROM Category" +
+        String sql = "SELECT * FROM Category " +
                      "ORDER BY category_name";
         return jdbc.query(sql, categoryRowMapper);
     }
