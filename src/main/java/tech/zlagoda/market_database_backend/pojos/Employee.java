@@ -112,22 +112,4 @@ public class Employee {
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "idEmployee='" + idEmployee + '\'' +
-                ", surname='" + surname + '\'' +
-                ", name='" + name + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", role='" + role + '\'' +
-                ", salary=" + salary +
-                ", dateOfBirth=" + dateOfBirth +
-                ", dateOfStart=" + dateOfStart +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                '}';
-    }
 }

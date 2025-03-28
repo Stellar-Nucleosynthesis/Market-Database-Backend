@@ -11,9 +11,9 @@ import java.util.List;
 import static tech.zlagoda.market_database_backend.validators.CategoryValidator.validate;
 
 @Repository
-public class CategoryRepository {
+public class CategoriesRepository {
     @Autowired
-    CategoryRepository(JdbcTemplate jdbc) {
+    CategoriesRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
@@ -21,7 +21,7 @@ public class CategoryRepository {
 
     public void addCategory(Category category) {
         validate(category);
-        String sql = "INSERT INTO Category VALUES (?, ?)";
+        String sql = "INSERT INTO Category (category_number, category_name) VALUES (?, ?)";
         jdbc.update(sql,
                 category.getCategoryNumber(),
                 category.getCategoryName());
@@ -32,10 +32,10 @@ public class CategoryRepository {
         jdbc.update(sql, categoryNumber);
     }
 
-    public void changeCategory(Category category) {
+    public void updateCategory(Category category) {
         validate(category);
-        deleteCategory(category.getCategoryNumber());
-        addCategory(category);
+        String sql = "UPDATE Category SET category_name = ? WHERE category_number = ?";
+        jdbc.update(sql, category.getCategoryName(), category.getCategoryNumber());
     }
 
     public List<Category> getCategories(String categoryName) {
@@ -47,7 +47,7 @@ public class CategoryRepository {
         };
         String sql = "SELECT * FROM Category";
         if (categoryName != null) {
-            sql += " WHERE category_name LIKE ?";
+            sql += " WHERE category_name = ?";
             return jdbc.query(sql, categoryRowMapper, categoryName);
         }
         return jdbc.query(sql, categoryRowMapper);

@@ -36,9 +36,9 @@ public class EmployeesController {
 
     @ManagerCheck
     @PutMapping("/{idEmployee}")
-    public ResponseEntity<String> changeEmployee(@RequestBody Employee employee, @PathVariable String idEmployee){
+    public ResponseEntity<String> updateEmployee(@RequestBody Employee employee, @PathVariable String idEmployee){
         employee.setIdEmployee(idEmployee);
-        repository.changeEmployee(employee);
+        repository.updateEmployee(employee);
         return ResponseEntity.status(HttpStatus.OK).body(employee.getIdEmployee());
     }
 

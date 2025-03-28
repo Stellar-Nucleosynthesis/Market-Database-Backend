@@ -21,7 +21,9 @@ public class EmployeesRepository {
 
     public void addEmployee(Employee employee) {
         validate(employee);
-        String sql = "INSERT INTO Employee VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_patronymic, " +
+                "empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbc.update(sql,
                 employee.getIdEmployee(),
                 employee.getSurname(),
@@ -42,10 +44,24 @@ public class EmployeesRepository {
         jdbc.update(sql, idEmployee);
     }
 
-    public void changeEmployee(Employee employee) {
+    public void updateEmployee(Employee employee) {
         validate(employee);
-        deleteEmployee(employee.getIdEmployee());
-        addEmployee(employee);
+        String sql = "UPDATE Employee SET empl_surname = ?, empl_name = ?, empl_patronymic = ?, empl_role = ?, " +
+                "salary = ?, date_of_birth = ?, date_of_start = ?, phone_number = ?, city = ?, street = ?, zip_code = ? " +
+                "WHERE id_employee = ?";
+        jdbc.update(sql,
+                employee.getSurname(),
+                employee.getName(),
+                employee.getPatronymic(),
+                employee.getRole(),
+                employee.getSalary(),
+                employee.getDateOfBirth(),
+                employee.getDateOfStart(),
+                employee.getPhoneNumber(),
+                employee.getCity(),
+                employee.getStreet(),
+                employee.getZipCode(),
+                employee.getIdEmployee());
     }
 
     public List<Employee> getEmployees(String name, String surname) {
@@ -67,13 +83,13 @@ public class EmployeesRepository {
         };
         String sql = "SELECT * FROM Employee";
         if (name != null && surname != null) {
-            sql += " WHERE empl_name LIKE ? AND empl_surname LIKE ?";
+            sql += " WHERE empl_name = ? AND empl_surname = ?";
             return jdbc.query(sql, employeeRowMapper, name, surname);
         } else if (name != null) {
-            sql += " WHERE empl_name LIKE ?";
+            sql += " WHERE empl_name = ?";
             return jdbc.query(sql, employeeRowMapper, name);
         } else if (surname != null) {
-            sql += " WHERE empl_surname LIKE ?";
+            sql += " WHERE empl_surname = ?";
             return jdbc.query(sql, employeeRowMapper, surname);
         }
         return jdbc.query(sql, employeeRowMapper);

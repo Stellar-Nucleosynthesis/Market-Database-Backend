@@ -21,7 +21,8 @@ public class ProductsRepository {
 
     public void addProduct(Product product) {
         validate(product);
-        String sql = "INSERT INTO Product VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Product (id_product, category_number, product_name, manufacturer, " +
+                "characteristics) VALUES (?, ?, ?, ?, ?)";
         jdbc.update(sql,
                 product.getIdProduct(),
                 product.getCategoryNumber(),
@@ -35,10 +36,16 @@ public class ProductsRepository {
         jdbc.update(sql, idProduct);
     }
 
-    public void changeProduct(Product product) {
+    public void updateProduct(Product product) {
         validate(product);
-        deleteProduct(product.getIdProduct());
-        addProduct(product);
+        String sql = "UPDATE Product SET category_number = ?, product_name = ?, manufacturer = ?, " +
+                "characteristics = ? WHERE id_product = ?";
+        jdbc.update(sql,
+                product.getCategoryNumber(),
+                product.getProductName(),
+                product.getManufacturer(),
+                product.getCharacteristics(),
+                product.getIdProduct());
     }
 
     public List<Product> getProducts(String productName, Integer categoryNumber) {
@@ -53,10 +60,10 @@ public class ProductsRepository {
         };
         String sql = "SELECT * FROM Product";
         if (productName != null && categoryNumber != null) {
-            sql += " WHERE product_name LIKE ? AND category_number = ?";
+            sql += " WHERE product_name = ? AND category_number = ?";
             return jdbc.query(sql, productRowMapper, productName, categoryNumber);
         } else if (productName != null) {
-            sql += " WHERE product_name LIKE ?";
+            sql += " WHERE product_name = ?";
             return jdbc.query(sql, productRowMapper, productName);
         } else if (categoryNumber != null) {
             sql += " WHERE category_number = ?";

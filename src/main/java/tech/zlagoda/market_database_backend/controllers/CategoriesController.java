@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Category;
-import tech.zlagoda.market_database_backend.repositories.CategoryRepository;
+import tech.zlagoda.market_database_backend.repositories.CategoriesRepository;
 import tech.zlagoda.market_database_backend.security.ManagerCheck;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoriesController {
     @Autowired
-    CategoriesController(CategoryRepository repository) {
+    CategoriesController(CategoriesRepository repository) {
         this.repository = repository;
     }
 
-    private final CategoryRepository repository;
+    private final CategoriesRepository repository;
 
     @ManagerCheck
     @PostMapping
@@ -36,9 +36,9 @@ public class CategoriesController {
 
     @ManagerCheck
     @PutMapping("/{categoryNumber}")
-    public ResponseEntity<Integer> changeCategory(@RequestBody Category category, @PathVariable int categoryNumber) {
+    public ResponseEntity<Integer> updateCategory(@RequestBody Category category, @PathVariable int categoryNumber) {
         category.setCategoryNumber(categoryNumber);
-        repository.changeCategory(category);
+        repository.updateCategory(category);
         return ResponseEntity.status(HttpStatus.OK).body(category.getCategoryNumber());
     }
 

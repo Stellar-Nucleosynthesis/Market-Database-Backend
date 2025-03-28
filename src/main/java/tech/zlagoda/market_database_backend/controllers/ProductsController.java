@@ -37,9 +37,9 @@ public class ProductsController {
 
     @ManagerCheck
     @PutMapping("/{idProduct}")
-    public ResponseEntity<Integer> changeProduct(@RequestBody Product product, @PathVariable int idProduct) {
+    public ResponseEntity<Integer> updateProduct(@RequestBody Product product, @PathVariable int idProduct) {
         product.setIdProduct(idProduct);
-        repository.changeProduct(product);
+        repository.updateProduct(product);
         return ResponseEntity.status(HttpStatus.OK).body(product.getIdProduct());
     }
 
