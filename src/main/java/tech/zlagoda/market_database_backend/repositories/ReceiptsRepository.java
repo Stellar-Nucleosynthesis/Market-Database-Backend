@@ -25,7 +25,7 @@ public class ReceiptsRepository {
     public void addReceipt(Receipt receipt) {
         validate(receipt);
         String sql = "INSERT INTO Receipt (receipt_number, id_employee, card_number, print_date, sum_total, vat) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?);";
         jdbc.update(sql,
                 receipt.getReceiptNumber(),
                 receipt.getIdEmployee(),
@@ -36,7 +36,7 @@ public class ReceiptsRepository {
     }
 
     public void deleteReceipt(String receiptNumber) {
-        String sql = "DELETE FROM Receipt WHERE receipt_number = ?";
+        String sql = "DELETE FROM Receipt WHERE receipt_number = ?;";
         jdbc.update(sql, receiptNumber);
     }
 
@@ -70,6 +70,7 @@ public class ReceiptsRepository {
             }
             sql += String.join(" AND ", conditions);
         }
+        sql += "ORDER BY receipt_number;";
         return jdbc.query(sql, receiptRowMapper, params.toArray());
     }
 
@@ -84,7 +85,7 @@ public class ReceiptsRepository {
             receipt.setVat(r.getBigDecimal("vat"));
             return receipt;
         };
-        String sql = "SELECT * FROM Receipt WHERE receipt_number = ?";
+        String sql = "SELECT * FROM Receipt WHERE receipt_number = ?;";
         return jdbc.query(sql, receiptRowMapper, receiptNumber).get(0);
     }
 }

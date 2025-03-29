@@ -21,12 +21,12 @@ public class SalesRepository {
 
     public void addSale(Sale sale){
         validate(sale);
-        String sql = "INSERT INTO Sale (UPC, receipt_number, product_number, selling_price) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Sale (UPC, receipt_number, product_number, selling_price) VALUES (?, ?, ?, ?);";
         jdbc.update(sql, sale.getUPC(), sale.getReceiptNumber(), sale.getProductNumber(), sale.getSellingPrice());
     }
 
     public void deleteSales(String receiptNumber){
-        String sql = "DELETE FROM Sale WHERE receipt_number = ?";
+        String sql = "DELETE FROM Sale WHERE receipt_number = ?;";
         jdbc.update(sql, receiptNumber);
     }
 
@@ -39,7 +39,7 @@ public class SalesRepository {
             sale.setSellingPrice(r.getBigDecimal("selling_price"));
             return sale;
         };
-        String sql = "SELECT * FROM Sale WHERE receipt_number = ?";
+        String sql = "SELECT * FROM Sale WHERE receipt_number = ?;";
         return jdbc.query(sql, receiptRowMapper, receiptNumber);
     }
 }

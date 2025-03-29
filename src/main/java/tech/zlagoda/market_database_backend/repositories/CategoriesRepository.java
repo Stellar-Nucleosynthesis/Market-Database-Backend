@@ -21,20 +21,20 @@ public class CategoriesRepository {
 
     public void addCategory(Category category) {
         validate(category);
-        String sql = "INSERT INTO Category (category_number, category_name) VALUES (?, ?)";
+        String sql = "INSERT INTO Category (category_number, category_name) VALUES (?, ?);";
         jdbc.update(sql,
                 category.getCategoryNumber(),
                 category.getCategoryName());
     }
 
     public void deleteCategory(int categoryNumber) {
-        String sql = "DELETE FROM Category WHERE category_number = ?";
+        String sql = "DELETE FROM Category WHERE category_number = ?;";
         jdbc.update(sql, categoryNumber);
     }
 
     public void updateCategory(Category category) {
         validate(category);
-        String sql = "UPDATE Category SET category_name = ? WHERE category_number = ?";
+        String sql = "UPDATE Category SET category_name = ? WHERE category_number = ?;";
         jdbc.update(sql, category.getCategoryName(), category.getCategoryNumber());
     }
 
@@ -46,7 +46,7 @@ public class CategoriesRepository {
             return category;
         };
         String sql = "SELECT * FROM Category " +
-                     "ORDER BY category_name ASC";
+                     "ORDER BY category_name ASC;";
         return jdbc.query(sql, categoryRowMapper);
     }
 }

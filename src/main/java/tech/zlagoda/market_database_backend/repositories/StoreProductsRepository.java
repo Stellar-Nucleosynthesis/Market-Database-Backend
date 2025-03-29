@@ -23,7 +23,7 @@ public class StoreProductsRepository {
     public void addStoreProduct(StoreProduct storeProduct) {
         validate(storeProduct);
         String sql = "INSERT INTO Store_Product (UPC, UPC_prom, id_product, " +
-                "selling_price, products_number, promotional_product) VALUES (?, ?, ?, ?, ?, ?)";
+                "selling_price, products_number, promotional_product) VALUES (?, ?, ?, ?, ?, ?);";
         jdbc.update(sql,
                 storeProduct.getUpc(),
                 storeProduct.getUpcProm(),
@@ -34,14 +34,14 @@ public class StoreProductsRepository {
     }
 
     public void deleteStoreProduct(String upc) {
-        String sql = "DELETE FROM Store_Product WHERE UPC = ?";
+        String sql = "DELETE FROM Store_Product WHERE UPC = ?;";
         jdbc.update(sql, upc);
     }
 
     public void updateStoreProduct(StoreProduct storeProduct) {
         validate(storeProduct);
         String sql = "UPDATE Store_Product SET UPC_prom = ?, id_product = ?, selling_price = ?, " +
-                "products_number = ?, promotional_product = ? WHERE UPC = ?";
+                "products_number = ?, promotional_product = ? WHERE UPC = ?;";
         jdbc.update(sql,
                 storeProduct.getUpcProm(),
                 storeProduct.getIdProduct(),
@@ -68,11 +68,13 @@ public class StoreProductsRepository {
             if ("quantity".equals(sortBy)) {
                 sql += " ORDER BY products_number ASC";
             }
+            sql += ";";
             return jdbc.query(sql, storeProductRowMapper, promotional);
         }
         if ("quantity".equals(sortBy)) {
             sql += " ORDER BY products_number ASC";
         }
+        sql += ";";
         return jdbc.query(sql, storeProductRowMapper);
     }
 
@@ -88,7 +90,7 @@ public class StoreProductsRepository {
         };
         String sql = "SELECT DISTINCT selling_price, products_number, product_name, manufacturer, characteristics" +
                     " FROM Store_Product, Product" +
-                    " WHERE UPC = ? AND Store_Product.id_product = Product.id_product";
+                    " WHERE UPC = ? AND Store_Product.id_product = Product.id_product;";
         return jdbc.query(sql, storeProductInfoRowMapper, upc).get(0);
     }
 }

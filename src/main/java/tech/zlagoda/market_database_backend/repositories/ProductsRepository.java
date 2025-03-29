@@ -23,7 +23,7 @@ public class ProductsRepository {
     public void addProduct(Product product) {
         validate(product);
         String sql = "INSERT INTO Product (id_product, category_number, product_name, manufacturer, " +
-                "characteristics) VALUES (?, ?, ?, ?, ?)";
+                "characteristics) VALUES (?, ?, ?, ?, ?);";
         jdbc.update(sql,
                 product.getIdProduct(),
                 product.getCategoryNumber(),
@@ -33,14 +33,14 @@ public class ProductsRepository {
     }
 
     public void deleteProduct(int idProduct) {
-        String sql = "DELETE FROM Product WHERE id_product = ?";
+        String sql = "DELETE FROM Product WHERE id_product = ?;";
         jdbc.update(sql, idProduct);
     }
 
     public void updateProduct(Product product) {
         validate(product);
         String sql = "UPDATE Product SET category_number = ?, product_name = ?, manufacturer = ?, " +
-                "characteristics = ? WHERE id_product = ?";
+                "characteristics = ? WHERE id_product = ?;";
         jdbc.update(sql,
                 product.getCategoryNumber(),
                 product.getProductName(),
@@ -77,6 +77,7 @@ public class ProductsRepository {
         if ("name".equals(sortBy)) {
             sql += " ORDER BY product_name ASC";
         }
+        sql += ";";
         return jdbc.query(sql, productRowMapper, params.toArray());
     }
 }

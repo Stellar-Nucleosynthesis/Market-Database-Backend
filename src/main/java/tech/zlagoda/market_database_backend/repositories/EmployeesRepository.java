@@ -23,7 +23,7 @@ public class EmployeesRepository {
         validate(employee);
         String sql = "INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_patronymic, " +
                 "empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         jdbc.update(sql,
                 employee.getIdEmployee(),
                 employee.getSurname(),
@@ -40,7 +40,7 @@ public class EmployeesRepository {
     }
 
     public void deleteEmployee(String idEmployee) {
-        String sql = "DELETE FROM Employee WHERE id_employee = ?";
+        String sql = "DELETE FROM Employee WHERE id_employee = ?;";
         jdbc.update(sql, idEmployee);
     }
 
@@ -48,7 +48,7 @@ public class EmployeesRepository {
         validate(employee);
         String sql = "UPDATE Employee SET empl_surname = ?, empl_name = ?, empl_patronymic = ?, empl_role = ?, " +
                 "salary = ?, date_of_birth = ?, date_of_start = ?, phone_number = ?, city = ?, street = ?, zip_code = ? " +
-                "WHERE id_employee = ?";
+                "WHERE id_employee = ?;";
         jdbc.update(sql,
                 employee.getSurname(),
                 employee.getName(),
@@ -84,18 +84,18 @@ public class EmployeesRepository {
         String sql = "SELECT * FROM Employee";
         if (surname != null && role != null) {
             sql += " WHERE empl_surname = ? AND empl_role = ? " +
-                    "ORDER BY empl_surname";
+                    "ORDER BY empl_surname ASC;";
             return jdbc.query(sql, employeeRowMapper, surname, role);
         } else if (surname != null) {
             sql += " WHERE empl_surname = ? " +
-                    "ORDER BY empl_surname";
+                    "ORDER BY empl_surname ASC;";
             return jdbc.query(sql, employeeRowMapper, surname);
         } else if (role != null) {
             sql += " WHERE empl_role = ? " +
-                    "ORDER BY empl_surname";
+                    "ORDER BY empl_surname ASC;";
             return jdbc.query(sql, employeeRowMapper, role);
         }
-        sql += " ORDER BY empl_surname ASC";
+        sql += " ORDER BY empl_surname ASC;";
         return jdbc.query(sql, employeeRowMapper);
     }
 }
