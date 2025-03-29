@@ -60,12 +60,10 @@ public class ReceiptsController {
 
     @EmployeeCheck
     @GetMapping("/search/{receiptNumber}")
-    public ResponseEntity<List<Receipt>> getReceipt(@PathVariable String receiptNumber) {
-        List<Receipt> receipts = receiptsRepository.getReceipt(receiptNumber);
-        for (Receipt receipt : receipts) {
-            receipt.setSales(salesRepository.getSales(receipt.getReceiptNumber()));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(receipts);
+    public ResponseEntity<Receipt> getReceipt(@PathVariable String receiptNumber) {
+        Receipt receipt = receiptsRepository.getReceipt(receiptNumber);
+        receipt.setSales(salesRepository.getSales(receipt.getReceiptNumber()));
+        return ResponseEntity.status(HttpStatus.OK).body(receipt);
     }
 
     @CashierCheck

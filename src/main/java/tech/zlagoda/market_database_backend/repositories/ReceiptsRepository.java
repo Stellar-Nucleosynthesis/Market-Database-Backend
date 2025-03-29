@@ -73,7 +73,7 @@ public class ReceiptsRepository {
         return jdbc.query(sql, receiptRowMapper, params.toArray());
     }
 
-    public List<Receipt> getReceipt(String receiptNumber) {
+    public Receipt getReceipt(String receiptNumber) {
         RowMapper<Receipt> receiptRowMapper = (r, i) -> {
             Receipt receipt = new Receipt();
             receipt.setReceiptNumber(r.getString("receipt_number"));
@@ -85,6 +85,6 @@ public class ReceiptsRepository {
             return receipt;
         };
         String sql = "SELECT * FROM Receipt WHERE receipt_number = ?";
-        return jdbc.query(sql, receiptRowMapper, receiptNumber);
+        return jdbc.query(sql, receiptRowMapper, receiptNumber).get(0);
     }
 }
