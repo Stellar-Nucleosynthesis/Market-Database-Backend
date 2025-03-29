@@ -77,7 +77,7 @@ public class StoreProductsRepository {
         return jdbc.query(sql, storeProductRowMapper);
     }
 
-    public StoreProductInfo getStoreProductInfo(String upc) {
+    public List<StoreProductInfo> getStoreProductInfo(String upc) {
         RowMapper<StoreProductInfo> storeProductInfoRowMapper = (r, rowNum) -> {
             StoreProductInfo storeProductInfo = new StoreProductInfo();
             storeProductInfo.setSellingPrice(r.getBigDecimal("selling_price"));
@@ -87,9 +87,9 @@ public class StoreProductsRepository {
             storeProductInfo.setCharacteristics(r.getString("characteristics"));
             return storeProductInfo;
         };
-        String sql = "SELECT selling_price, products_number, product_name, manufacturer, characteristics" +
+        String sql = "SELECT DISTINCT selling_price, products_number, product_name, manufacturer, characteristics" +
                     " FROM Store_Product, Product" +
-                    " WHERE UPC = ?";
-        return jdbc.queryForObject(sql, storeProductInfoRowMapper, upc);
+                    " WHERE UPC = ? AND Store_Product.id_product = Product.id_product";
+        return jdbc.query(sql, storeProductInfoRowMapper, upc);
     }
 }

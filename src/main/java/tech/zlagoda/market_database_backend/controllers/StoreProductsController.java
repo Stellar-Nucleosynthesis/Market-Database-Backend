@@ -54,7 +54,7 @@ public class StoreProductsController {
 
     @EmployeeCheck
     @GetMapping("/search/{upc}")
-    public ResponseEntity<StoreProductInfo> getStoreProductInfo(@PathVariable String upc) {
+    public ResponseEntity<List<StoreProductInfo>> getStoreProductInfo(@PathVariable String upc) {
         return ResponseEntity.status(HttpStatus.OK).body(repository.getStoreProductInfo(upc));
     }
 }
