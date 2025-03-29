@@ -2,6 +2,8 @@ package tech.zlagoda.market_database_backend.pojos;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Receipt {
     private String receiptNumber;
@@ -10,6 +12,8 @@ public class Receipt {
     private Date printDate;
     private BigDecimal sumTotal;
     private BigDecimal vat;
+
+    private List<Sale> sales = new ArrayList<>();
 
     public String getReceiptNumber() {
         return receiptNumber;
@@ -57,5 +61,13 @@ public class Receipt {
 
     public void setVat(BigDecimal vat) {
         this.vat = vat;
+    }
+
+    public List<Sale> getSales() {
+        return sales;
+    }
+
+    public void setSales(List<Sale> sales) {
+        this.sales = sales;
     }
 }

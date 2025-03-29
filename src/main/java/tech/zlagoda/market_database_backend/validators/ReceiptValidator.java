@@ -1,6 +1,7 @@
 package tech.zlagoda.market_database_backend.validators;
 
 import tech.zlagoda.market_database_backend.pojos.Receipt;
+import tech.zlagoda.market_database_backend.pojos.Sale;
 
 import java.math.BigDecimal;
 
@@ -29,6 +30,10 @@ public class ReceiptValidator {
         }
         if (receipt.getVat() == null || receipt.getVat().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Illegal receipt VAT amount");
+        }
+        for(Sale sale : receipt.getSales()){
+            SaleValidator.validate(sale);
+            throw new IllegalArgumentException("Conflicting receipt number");
         }
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import tech.zlagoda.market_database_backend.pojos.StoreProduct;
 import tech.zlagoda.market_database_backend.pojos.StoreProductInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static tech.zlagoda.market_database_backend.validators.StoreProductValidator.validate;

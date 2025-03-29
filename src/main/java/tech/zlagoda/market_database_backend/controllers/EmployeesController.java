@@ -52,7 +52,7 @@ public class EmployeesController {
     }
 
     @EmployeeCheck
-    @GetMapping("/search/me")
+    @GetMapping("/me")
     public ResponseEntity<Employee> getMe(){
         throw new UnsupportedOperationException("Unable to get information about \"me\"");
     }

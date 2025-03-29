@@ -3,19 +3,18 @@ package tech.zlagoda.market_database_backend.error_handling;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import tech.zlagoda.market_database_backend.controllers.StoreProductsController;
+import tech.zlagoda.market_database_backend.controllers.ReceiptsController;
 
-@RestControllerAdvice(assignableTypes = {StoreProductsController.class})
-public class StoreProductsErrorHandler {
+@RestControllerAdvice(assignableTypes = {ReceiptsController.class})
+public class ReceiptsErrorHandler {
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<String> exceptionHandler(Throwable e) {
         String reason = "ERROR: ";
         if (e instanceof IllegalArgumentException) {
             reason += e.getMessage();
         } else {
-            reason += "Unable to query store products information";
+            reason += "Unable to query receipts information";
         }
-        e.printStackTrace();
         return ResponseEntity.badRequest().body(reason);
     }
 }
