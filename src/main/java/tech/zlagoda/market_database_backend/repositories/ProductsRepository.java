@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import tech.zlagoda.market_database_backend.pojos.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static tech.zlagoda.market_database_backend.validators.ProductValidator.validate;
@@ -48,7 +49,7 @@ public class ProductsRepository {
                 product.getIdProduct());
     }
 
-    public List<Product> getProducts(String productName, Integer categoryNumber) {
+    public List<Product> getProducts(String productName, Integer categoryNumber, String sortBy) {
         RowMapper<Product> productRowMapper = (r, i) -> {
             Product product = new Product();
             product.setIdProduct(r.getInt("id_product"));
@@ -59,16 +60,23 @@ public class ProductsRepository {
             return product;
         };
         String sql = "SELECT * FROM Product";
-        if (productName != null && categoryNumber != null) {
-            sql += " WHERE product_name = ? AND category_number = ?";
-            return jdbc.query(sql, productRowMapper, productName, categoryNumber);
-        } else if (productName != null) {
-            sql += " WHERE product_name = ?";
-            return jdbc.query(sql, productRowMapper, productName);
-        } else if (categoryNumber != null) {
-            sql += " WHERE category_number = ?";
-            return jdbc.query(sql, productRowMapper, categoryNumber);
+        List<Object> params = new ArrayList<>();
+        if (productName != null || categoryNumber != null) {
+            sql += " WHERE ";
+            List<String> conditions = new ArrayList<>();
+            if (productName != null) {
+                conditions.add("product_name = ?");
+                params.add(productName);
+            }
+            if (categoryNumber != null) {
+                conditions.add("category_number = ?");
+                params.add(categoryNumber);
+            }
+            sql += String.join(" AND ", conditions);
         }
-        return jdbc.query(sql, productRowMapper);
+        if ("name".equals(sortBy)) {
+            sql += " ORDER BY product_name ASC";
+        }
+        return jdbc.query(sql, productRowMapper, params.toArray());
     }
 }

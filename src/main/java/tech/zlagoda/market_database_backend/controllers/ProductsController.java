@@ -47,7 +47,8 @@ public class ProductsController {
     @GetMapping("/search")
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false) String productName,
-            @RequestParam(required = false) Integer categoryNumber){
-        return ResponseEntity.status(HttpStatus.OK).body(repository.getProducts(productName, categoryNumber));
+            @RequestParam(required = false) Integer categoryNumber,
+            @RequestParam(required = false) String sortBy) {
+        return ResponseEntity.status(HttpStatus.OK).body(repository.getProducts(productName, categoryNumber, sortBy));
     }
 }

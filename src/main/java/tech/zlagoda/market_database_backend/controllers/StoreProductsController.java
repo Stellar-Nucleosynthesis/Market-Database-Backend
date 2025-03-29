@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.StoreProduct;
+import tech.zlagoda.market_database_backend.pojos.StoreProductInfo;
 import tech.zlagoda.market_database_backend.repositories.StoreProductsRepository;
 import tech.zlagoda.market_database_backend.security.EmployeeCheck;
 import tech.zlagoda.market_database_backend.security.ManagerCheck;
@@ -45,7 +46,15 @@ public class StoreProductsController {
 
     @EmployeeCheck
     @GetMapping("/search")
-    public ResponseEntity<List<StoreProduct>> getStoreProducts(@RequestParam(required = false) String upc, @RequestParam(required = false) Boolean promotional) {
-        return ResponseEntity.status(HttpStatus.OK).body(repository.getStoreProducts(upc, promotional));
+    public ResponseEntity<List<StoreProduct>> getStoreProducts(
+            @RequestParam(required = false) Boolean promotional,
+            @RequestParam(required = false) String sortBy) {
+        return ResponseEntity.status(HttpStatus.OK).body(repository.getStoreProducts(promotional, sortBy));
+    }
+
+    @EmployeeCheck
+    @GetMapping("/search/{upc}")
+    public ResponseEntity<StoreProductInfo> getStoreProductInfo(@PathVariable String upc) {
+        return ResponseEntity.status(HttpStatus.OK).body(repository.getStoreProductInfo(upc));
     }
 }

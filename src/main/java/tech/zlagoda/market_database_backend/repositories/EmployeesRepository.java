@@ -95,7 +95,7 @@ public class EmployeesRepository {
                     "ORDER BY empl_surname";
             return jdbc.query(sql, employeeRowMapper, role);
         }
-        sql += " ORDER BY empl_surname";
+        sql += " ORDER BY empl_surname ASC";
         return jdbc.query(sql, employeeRowMapper);
     }
 }

@@ -46,7 +46,7 @@ public class CategoriesRepository {
             return category;
         };
         String sql = "SELECT * FROM Category " +
-                     "ORDER BY category_name";
+                     "ORDER BY category_name ASC";
         return jdbc.query(sql, categoryRowMapper);
     }
 }

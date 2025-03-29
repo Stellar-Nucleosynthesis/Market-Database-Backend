@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import tech.zlagoda.market_database_backend.controllers.StoreProductsController;
 import tech.zlagoda.market_database_backend.pojos.StoreProduct;
+import tech.zlagoda.market_database_backend.pojos.StoreProductInfo;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static tech.zlagoda.market_database_backend.validators.StoreProductValidator.validate;
@@ -52,27 +52,44 @@ public class StoreProductsRepository {
                 storeProduct.getUpc());
     }
 
-    public List<StoreProduct> getStoreProducts(String upc, Boolean promotional) {
-        RowMapper<StoreProduct> rowMapper = (rs, rowNum) -> {
+    public List<StoreProduct> getStoreProducts(Boolean promotional, String sortBy) {
+        RowMapper<StoreProduct> storeProductRowMapper = (r, rowNum) -> {
             StoreProduct storeProduct = new StoreProduct();
-            storeProduct.setUpc(rs.getString("UPC"));
-            storeProduct.setUpcProm(rs.getString("UPC_prom"));
-            storeProduct.setIdProduct(rs.getInt("id_product"));
-            storeProduct.setSellingPrice(rs.getBigDecimal("selling_price"));
-            storeProduct.setProductsNumber(rs.getInt("products_number"));
-            storeProduct.setPromotionalProduct(rs.getBoolean("promotional_product"));
+            storeProduct.setUpc(r.getString("UPC"));
+            storeProduct.setUpcProm(r.getString("UPC_prom"));
+            storeProduct.setIdProduct(r.getInt("id_product"));
+            storeProduct.setSellingPrice(r.getBigDecimal("selling_price"));
+            storeProduct.setProductsNumber(r.getInt("products_number"));
+            storeProduct.setPromotionalProduct(r.getBoolean("promotional_product"));
             return storeProduct;
         };
         String sql = "SELECT * FROM Store_Product";
-        if(upc != null && promotional != null) {
-            sql += " WHERE UPC = ? AND promotional_product = ?";
-        } else if (upc != null) {
-            sql += " WHERE UPC = ?";
-            return jdbc.query(sql, rowMapper, upc);
-        } else if (promotional != null) {
+        if(promotional != null) {
             sql += " WHERE promotional_product = ?";
-            return jdbc.query(sql, rowMapper, promotional);
+            if ("quantity".equals(sortBy)) {
+                sql += " ORDER BY products_number ASC";
+            }
+            return jdbc.query(sql, storeProductRowMapper, promotional);
         }
-        return jdbc.query(sql, rowMapper);
+        if ("quantity".equals(sortBy)) {
+            sql += " ORDER BY products_number ASC";
+        }
+        return jdbc.query(sql, storeProductRowMapper);
+    }
+
+    public StoreProductInfo getStoreProductInfo(String upc) {
+        RowMapper<StoreProductInfo> storeProductInfoRowMapper = (r, rowNum) -> {
+            StoreProductInfo storeProductInfo = new StoreProductInfo();
+            storeProductInfo.setSellingPrice(r.getBigDecimal("selling_price"));
+            storeProductInfo.setProductsNumber(r.getInt("products_number"));
+            storeProductInfo.setProductName(r.getString("product_name"));
+            storeProductInfo.setManufacturer(r.getString("manufacturer"));
+            storeProductInfo.setCharacteristics(r.getString("characteristics"));
+            return storeProductInfo;
+        };
+        String sql = "SELECT selling_price, products_number, product_name, manufacturer, characteristics" +
+                    " FROM Store_Product, Product" +
+                    " WHERE UPC = ?";
+        return jdbc.queryForObject(sql, storeProductInfoRowMapper, upc);
     }
 }

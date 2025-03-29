@@ -28,7 +28,7 @@ public class EmployeeValidator {
             throw new IllegalArgumentException("Illegal employee patronymic");
         }
         String role = employee.getRole();
-        if(role == null || (!role.equals("MANAGER") && role.equals("CASHIER"))) {
+        if(role == null || (!role.equals("Manager") && !role.equals("Cashier"))) {
             throw new IllegalArgumentException("Illegal employee role");
         }
         BigDecimal salary = employee.getSalary();
