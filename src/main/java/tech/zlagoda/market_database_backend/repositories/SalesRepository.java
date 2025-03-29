@@ -35,7 +35,7 @@ public class SalesRepository {
             Sale sale = new Sale();
             sale.setUPC(r.getString("UPC"));
             sale.setReceiptNumber(r.getString("receipt_number"));
-            sale.setProductNumber(r.getString("product_number"));
+            sale.setProductNumber(r.getInt("product_number"));
             sale.setSellingPrice(r.getBigDecimal("selling_price"));
             return sale;
         };

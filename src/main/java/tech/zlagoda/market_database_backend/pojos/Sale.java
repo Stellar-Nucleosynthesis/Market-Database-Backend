@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class Sale {
     private String UPC;
     private String receiptNumber;
-    private String productNumber;
+    private int productNumber;
     private BigDecimal sellingPrice;
 
     public String getUPC() {
@@ -24,11 +24,11 @@ public class Sale {
         this.receiptNumber = receiptNumber;
     }
 
-    public String getProductNumber() {
+    public int getProductNumber() {
         return productNumber;
     }
 
-    public void setProductNumber(String productNumber) {
+    public void setProductNumber(int productNumber) {
         this.productNumber = productNumber;
     }
 

@@ -12,6 +12,7 @@ import tech.zlagoda.market_database_backend.security.CashierCheck;
 import tech.zlagoda.market_database_backend.security.EmployeeCheck;
 import tech.zlagoda.market_database_backend.security.ManagerCheck;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
@@ -64,6 +65,38 @@ public class ReceiptsController {
         Receipt receipt = receiptsRepository.getReceipt(receiptNumber);
         receipt.setSales(salesRepository.getSales(receipt.getReceiptNumber()));
         return ResponseEntity.status(HttpStatus.OK).body(receipt);
+    }
+
+    @ManagerCheck
+    @GetMapping("/total")
+    public ResponseEntity<BigDecimal> getTotal(
+            @RequestParam(required = false) String idEmployee,
+            @RequestParam(required = false) Date from,
+            @RequestParam(required = false) Date to){
+        BigDecimal res = BigDecimal.ZERO;
+        for(Receipt receipt : receiptsRepository.getReceipts(idEmployee, from, to)) {
+            for(Sale sale : salesRepository.getSales(receipt.getReceiptNumber())) {
+                res = res.add(sale.getSellingPrice().multiply(new BigDecimal(sale.getProductNumber())));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @ManagerCheck
+    @GetMapping("/quantity/{upc}")
+    public ResponseEntity<Integer> getQuantity(
+            @PathVariable String upc,
+            @RequestParam(required = false) Date from,
+            @RequestParam(required = false) Date to) {
+        int res = 0;
+        for(Receipt receipt : receiptsRepository.getReceipts(null, from, to)) {
+            for(Sale sale : salesRepository.getSales(receipt.getReceiptNumber())) {
+                if(sale.getUPC().equals(upc)) {
+                    res += sale.getProductNumber();
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @CashierCheck

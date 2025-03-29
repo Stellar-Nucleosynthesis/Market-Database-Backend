@@ -13,6 +13,9 @@ public class SaleValidator {
         if (receiptNum == null || receiptNum.length() > 10 || receiptNum.isEmpty()) {
             throw new IllegalArgumentException("Illegal receipt number");
         }
+        if(sale.getProductNumber() < 0){
+            throw new IllegalArgumentException("Illegal product number");
+        }
         BigDecimal sellingPrice = sale.getSellingPrice();
         if (sellingPrice == null || sellingPrice.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Illegal selling price");
