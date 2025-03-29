@@ -3,6 +3,7 @@ package tech.zlagoda.market_database_backend.error_handling;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tech.zlagoda.market_database_backend.controllers.CustomerCardsController;
 
 @RestControllerAdvice(assignableTypes = {CustomerCardsController.class})
 public class CustomerCardsErrorHandler {

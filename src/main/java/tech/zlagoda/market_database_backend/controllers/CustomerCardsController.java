@@ -1,7 +1,6 @@
 package tech.zlagoda.market_database_backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer-cards")
 public class CustomerCardsController {
-    private final PersistenceExceptionTranslationAutoConfiguration persistenceExceptionTranslationAutoConfiguration;
 
     @Autowired
-    CustomerCardsController(CustomerCardsRepository repository, PersistenceExceptionTranslationAutoConfiguration persistenceExceptionTranslationAutoConfiguration) {
+    CustomerCardsController(CustomerCardsRepository repository) {
         this.repository = repository;
-        this.persistenceExceptionTranslationAutoConfiguration = persistenceExceptionTranslationAutoConfiguration;
     }
 
     private final CustomerCardsRepository repository;

@@ -15,7 +15,6 @@ public class StoreProductsErrorHandler {
         } else {
             reason += "Unable to query store products information";
         }
-        e.printStackTrace();
         return ResponseEntity.badRequest().body(reason);
     }
 }
