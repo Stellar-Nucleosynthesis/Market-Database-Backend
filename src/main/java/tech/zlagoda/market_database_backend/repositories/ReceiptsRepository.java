@@ -70,7 +70,7 @@ public class ReceiptsRepository {
             }
             sql += String.join(" AND ", conditions);
         }
-        sql += "ORDER BY receipt_number;";
+        sql += " ORDER BY receipt_number;";
         return jdbc.query(sql, receiptRowMapper, params.toArray());
     }
 
