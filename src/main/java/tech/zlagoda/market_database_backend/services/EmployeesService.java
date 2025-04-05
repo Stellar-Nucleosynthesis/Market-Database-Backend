@@ -45,6 +45,10 @@ public class EmployeesService {
         return employeesRepository.getEmployees(surname, role);
     }
 
+    public Employee getEmployee(String idEmployee){
+        return employeesRepository.getEmployee(idEmployee);
+    }
+
     public Employee getMe(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();

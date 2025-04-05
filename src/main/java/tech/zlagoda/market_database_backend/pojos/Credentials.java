@@ -1,6 +1,6 @@
 package tech.zlagoda.market_database_backend.pojos;
 
-public class AuthRequest {
+public class Credentials {
 
     private String username;
     private String password;

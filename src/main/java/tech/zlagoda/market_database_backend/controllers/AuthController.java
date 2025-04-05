@@ -8,7 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import tech.zlagoda.market_database_backend.pojos.AuthRequest;
+import tech.zlagoda.market_database_backend.pojos.Credentials;
 import tech.zlagoda.market_database_backend.services.JwtService;
 
 @RestController
@@ -25,12 +25,12 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<String> login(@RequestBody Credentials credentials) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword())
         );
         if (authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.OK).body(jwtService.generateToken(authRequest.getUsername()));
+            return ResponseEntity.status(HttpStatus.OK).body(jwtService.generateToken(credentials.getUsername()));
         } else {
             throw new UsernameNotFoundException("Invalid login information");
         }

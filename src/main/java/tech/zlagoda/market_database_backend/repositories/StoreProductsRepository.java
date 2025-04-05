@@ -70,6 +70,6 @@ public class StoreProductsRepository {
         String sql = "SELECT DISTINCT selling_price, products_number, product_name, manufacturer, characteristics" +
                     " FROM Store_Product, Product" +
                     " WHERE UPC = ? AND Store_Product.id_product = Product.id_product;";
-        return jdbc.query(sql, storeProductInfoRowMapper, upc).get(0);
+        return jdbc.queryForObject(sql, storeProductInfoRowMapper, upc);
     }
 }

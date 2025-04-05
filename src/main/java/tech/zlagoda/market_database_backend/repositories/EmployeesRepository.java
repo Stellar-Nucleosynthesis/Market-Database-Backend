@@ -81,4 +81,10 @@ public class EmployeesRepository {
         sql += " ORDER BY empl_surname ASC;";
         return jdbc.query(sql, employeeRowMapper);
     }
+
+    public Employee getEmployee(String idEmployee) {
+        RowMapper<Employee> employeeRowMapper = Employee.getRowMapper();
+        String sql = "SELECT * FROM Employee WHERE id_employee = ?;";
+        return jdbc.queryForObject(sql, employeeRowMapper, idEmployee);
+    }
 }
