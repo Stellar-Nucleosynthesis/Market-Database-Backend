@@ -20,7 +20,6 @@ public class EmployeesRepository {
     private final JdbcTemplate jdbc;
 
     public void addEmployee(Employee employee) {
-        validate(employee);
         String sql = "INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_patronymic, " +
                 "empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -45,7 +44,6 @@ public class EmployeesRepository {
     }
 
     public void updateEmployee(Employee employee) {
-        validate(employee);
         String sql = "UPDATE Employee SET empl_surname = ?, empl_name = ?, empl_patronymic = ?, empl_role = ?, " +
                 "salary = ?, date_of_birth = ?, date_of_start = ?, phone_number = ?, city = ?, street = ?, zip_code = ? " +
                 "WHERE id_employee = ?;";

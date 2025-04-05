@@ -9,8 +9,6 @@ import tech.zlagoda.market_database_backend.pojos.StoreProductInfo;
 
 import java.util.List;
 
-import static tech.zlagoda.market_database_backend.validators.StoreProductValidator.validate;
-
 @Repository
 public class StoreProductsRepository {
     @Autowired
@@ -21,7 +19,6 @@ public class StoreProductsRepository {
     private final JdbcTemplate jdbc;
 
     public void addStoreProduct(StoreProduct storeProduct) {
-        validate(storeProduct);
         String sql = "INSERT INTO Store_Product (UPC, UPC_prom, id_product, " +
                 "selling_price, products_number, promotional_product) VALUES (?, ?, ?, ?, ?, ?);";
         jdbc.update(sql,
@@ -39,7 +36,6 @@ public class StoreProductsRepository {
     }
 
     public void updateStoreProduct(StoreProduct storeProduct) {
-        validate(storeProduct);
         String sql = "UPDATE Store_Product SET UPC_prom = ?, id_product = ?, selling_price = ?, " +
                 "products_number = ?, promotional_product = ? WHERE UPC = ?;";
         jdbc.update(sql,

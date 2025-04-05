@@ -4,14 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Receipt;
-import tech.zlagoda.market_database_backend.pojos.Sale;
-import tech.zlagoda.market_database_backend.repositories.ReceiptsRepository;
-import tech.zlagoda.market_database_backend.repositories.SalesRepository;
-import tech.zlagoda.market_database_backend.repositories.UserInfoRepository;
+import tech.zlagoda.market_database_backend.services.ReceiptsService;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -21,32 +16,22 @@ import java.util.List;
 @RequestMapping("/receipts")
 public class ReceiptsController {
     @Autowired
-    public ReceiptsController(ReceiptsRepository receiptsRepository, SalesRepository salesRepository, UserInfoRepository userInfoRepository) {
-        this.receiptsRepository = receiptsRepository;
-        this.salesRepository = salesRepository;
-        this.userInfoRepository = userInfoRepository;
+    public ReceiptsController(ReceiptsService service) {
+        this.service = service;
     }
 
-    private final ReceiptsRepository receiptsRepository;
-    private final SalesRepository salesRepository;
-    private final UserInfoRepository userInfoRepository;
+    private final ReceiptsService service;
 
     @Secured({"Cashier"})
     @PostMapping
     public ResponseEntity<String> addReceipt(@RequestBody Receipt receipt) {
-        receiptsRepository.addReceipt(receipt);
-        for(Sale sale : receipt.getSales()) {
-            salesRepository.addSale(sale);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(receipt.getReceiptNumber());
+        return ResponseEntity.status(HttpStatus.OK).body(service.addReceipt(receipt));
     }
 
     @Secured({"Manager"})
     @DeleteMapping("/{receiptNumber}")
     public ResponseEntity<String> deleteReceipt(@PathVariable String receiptNumber) {
-        receiptsRepository.deleteReceipt(receiptNumber);
-        salesRepository.deleteSales(receiptNumber);
-        return ResponseEntity.status(HttpStatus.OK).body(receiptNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(service.deleteReceipt(receiptNumber));
     }
 
     @Secured({"Manager"})
@@ -55,19 +40,13 @@ public class ReceiptsController {
             @RequestParam(required = false) String idEmployee,
             @RequestParam(required = false) Date from,
             @RequestParam(required = false) Date to) {
-        List<Receipt> receipts = receiptsRepository.getReceipts(idEmployee, from, to);
-        for (Receipt receipt : receipts) {
-            receipt.setSales(salesRepository.getSales(receipt.getReceiptNumber()));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(receipts);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getReceipts(idEmployee, from, to));
     }
 
     @Secured({"Manager", "Cashier"})
     @GetMapping("/search/{receiptNumber}")
     public ResponseEntity<Receipt> getReceipt(@PathVariable String receiptNumber) {
-        Receipt receipt = receiptsRepository.getReceipt(receiptNumber);
-        receipt.setSales(salesRepository.getSales(receipt.getReceiptNumber()));
-        return ResponseEntity.status(HttpStatus.OK).body(receipt);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getReceipt(receiptNumber));
     }
 
     @Secured({"Manager"})
@@ -76,13 +55,7 @@ public class ReceiptsController {
             @RequestParam(required = false) String idEmployee,
             @RequestParam(required = false) Date from,
             @RequestParam(required = false) Date to){
-        BigDecimal res = BigDecimal.ZERO;
-        for(Receipt receipt : receiptsRepository.getReceipts(idEmployee, from, to)) {
-            for(Sale sale : salesRepository.getSales(receipt.getReceiptNumber())) {
-                res = res.add(sale.getSellingPrice().multiply(new BigDecimal(sale.getProductNumber())));
-            }
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getTotal(idEmployee, from, to));
     }
 
     @Secured({"Manager"})
@@ -91,24 +64,13 @@ public class ReceiptsController {
             @PathVariable String upc,
             @RequestParam(required = false) Date from,
             @RequestParam(required = false) Date to) {
-        int res = 0;
-        for(Receipt receipt : receiptsRepository.getReceipts(null, from, to)) {
-            for(Sale sale : salesRepository.getSales(receipt.getReceiptNumber())) {
-                if(sale.getUPC().equals(upc)) {
-                    res += sale.getProductNumber();
-                }
-            }
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getQuantity(upc, from, to));
     }
 
     @Secured({"Cashier"})
     @GetMapping("/me")
-    public ResponseEntity<List<Receipt>> getReceipts(@RequestParam(required = false) Date from,
-                                                     @RequestParam(required = false) Date to){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        String idEmployee = userInfoRepository.getUserInfo(username).getEmployee().getIdEmployee();
-        return ResponseEntity.status(HttpStatus.OK).body(getReceipts(idEmployee, from, to).getBody());
+    public ResponseEntity<List<Receipt>> getMyReceipts(@RequestParam(required = false) Date from,
+                                                       @RequestParam(required = false) Date to){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getMyReceipts(from, to));
     }
 }

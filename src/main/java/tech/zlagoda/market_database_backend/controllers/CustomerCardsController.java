@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.CustomerCard;
-import tech.zlagoda.market_database_backend.repositories.CustomerCardsRepository;
+import tech.zlagoda.market_database_backend.services.CustomerCardsService;
 
 import java.util.List;
 
@@ -15,24 +15,22 @@ import java.util.List;
 public class CustomerCardsController {
 
     @Autowired
-    CustomerCardsController(CustomerCardsRepository repository) {
-        this.repository = repository;
+    CustomerCardsController(CustomerCardsService service) {
+        this.service = service;
     }
 
-    private final CustomerCardsRepository repository;
+    private final CustomerCardsService service;
 
     @Secured({"Manager", "Cashier"})
     @PostMapping
     public ResponseEntity<String> addCustomerCard(@RequestBody CustomerCard customerCard) {
-        repository.addCustomerCard(customerCard);
-        return ResponseEntity.status(HttpStatus.OK).body(customerCard.getCardNumber());
+        return ResponseEntity.status(HttpStatus.OK).body(service.addCustomerCard(customerCard));
     }
 
     @Secured({"Manager", "Cashier"})
     @DeleteMapping("/{cardNumber}")
     public ResponseEntity<String> deleteCustomerCard(@PathVariable String cardNumber) {
-        repository.deleteCustomerCard(cardNumber);
-        return ResponseEntity.status(HttpStatus.OK).body(cardNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(service.deleteCustomerCard(cardNumber));
     }
 
     @Secured({"Manager", "Cashier"})
@@ -40,9 +38,7 @@ public class CustomerCardsController {
     public ResponseEntity<String> updateCustomerCard(
             @RequestBody CustomerCard customerCard,
             @PathVariable String cardNumber) {
-        customerCard.setCardNumber(cardNumber);
-        repository.updateCustomerCard(customerCard);
-        return ResponseEntity.status(HttpStatus.OK).body(customerCard.getCardNumber());
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateCustomerCard(customerCard, cardNumber));
     }
 
     @Secured({"Manager", "Cashier"})
@@ -50,6 +46,6 @@ public class CustomerCardsController {
     public ResponseEntity<List<CustomerCard>> getCustomerCards(
             @RequestParam(required = false) String surname,
             @RequestParam(required = false) Integer percent) {
-        return ResponseEntity.status(HttpStatus.OK).body(repository.getCustomerCards(surname, percent));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getCustomerCards(surname, percent));
     }
 }

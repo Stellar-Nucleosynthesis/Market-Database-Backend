@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Category;
-import tech.zlagoda.market_database_backend.repositories.CategoriesRepository;
+import tech.zlagoda.market_database_backend.services.CategoriesService;
 
 import java.util.List;
 
@@ -14,37 +14,33 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoriesController {
     @Autowired
-    CategoriesController(CategoriesRepository repository) {
-        this.repository = repository;
+    CategoriesController(CategoriesService service) {
+        this.service = service;
     }
 
-    private final CategoriesRepository repository;
+    private final CategoriesService service;
 
     @Secured("Manager")
     @PostMapping
     public ResponseEntity<Integer> addCategory(@RequestBody Category category) {
-        repository.addCategory(category);
-        return ResponseEntity.status(HttpStatus.OK).body(category.getCategoryNumber());
+        return ResponseEntity.status(HttpStatus.OK).body(service.addCategory(category));
     }
 
     @Secured("Manager")
     @DeleteMapping("/{categoryNumber}")
     public ResponseEntity<Integer> deleteCategory(@PathVariable int categoryNumber) {
-        repository.deleteCategory(categoryNumber);
-        return ResponseEntity.status(HttpStatus.OK).body(categoryNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(service.deleteCategory(categoryNumber));
     }
 
     @Secured("Manager")
     @PutMapping("/{categoryNumber}")
     public ResponseEntity<Integer> updateCategory(@RequestBody Category category, @PathVariable int categoryNumber) {
-        category.setCategoryNumber(categoryNumber);
-        repository.updateCategory(category);
-        return ResponseEntity.status(HttpStatus.OK).body(category.getCategoryNumber());
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateCategory(category, categoryNumber));
     }
 
     @Secured("Manager")
     @GetMapping("/search")
     public ResponseEntity<List<Category>> getCategories(){
-        return ResponseEntity.status(HttpStatus.OK).body(repository.getCategories());
+        return ResponseEntity.status(HttpStatus.OK).body(service.getCategories());
     }
 }

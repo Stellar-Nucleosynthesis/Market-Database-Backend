@@ -20,7 +20,6 @@ public class CustomerCardsRepository {
     private final JdbcTemplate jdbc;
 
     public void addCustomerCard(CustomerCard cc) {
-        validate(cc);
         String sql = "INSERT INTO Customer_Card (card_number, cust_surname, cust_name, cust_patronymic, phone_number, " +
                 "city, street, zip_code, percent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         jdbc.update(sql, cc.getCardNumber(), cc.getSurname(), cc.getName(), cc.getPatronymic(), cc.getPhoneNumber(),
@@ -33,7 +32,6 @@ public class CustomerCardsRepository {
     }
 
     public void updateCustomerCard(CustomerCard cc) {
-        validate(cc);
         String sql = "UPDATE Customer_Card SET cust_surname = ?, cust_name = ?, cust_patronymic = ?, phone_number = ?, " +
                 "city = ?, street = ?, zip_code = ?, percent = ? WHERE card_number = ?;";
         jdbc.update(sql, cc.getSurname(), cc.getName(), cc.getPatronymic(), cc.getPhoneNumber(),

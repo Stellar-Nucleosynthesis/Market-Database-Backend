@@ -5,13 +5,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import tech.zlagoda.market_database_backend.pojos.Receipt;
-import tech.zlagoda.market_database_backend.pojos.Sale;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import static tech.zlagoda.market_database_backend.validators.ReceiptValidator.validate;
 
 @Repository
 public class ReceiptsRepository {
@@ -23,7 +20,6 @@ public class ReceiptsRepository {
     private final JdbcTemplate jdbc;
 
     public void addReceipt(Receipt receipt) {
-        validate(receipt);
         String sql = "INSERT INTO Receipt (receipt_number, id_employee, card_number, print_date, sum_total, vat) " +
                 "VALUES (?, ?, ?, ?, ?, ?);";
         jdbc.update(sql,

@@ -7,7 +7,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.StoreProduct;
 import tech.zlagoda.market_database_backend.pojos.StoreProductInfo;
-import tech.zlagoda.market_database_backend.repositories.StoreProductsRepository;
+import tech.zlagoda.market_database_backend.services.StoreProductsService;
 
 import java.util.List;
 
@@ -15,32 +15,29 @@ import java.util.List;
 @RequestMapping("/store-products")
 public class StoreProductsController {
     @Autowired
-    StoreProductsController(StoreProductsRepository repository) {
-        this.repository = repository;
+    StoreProductsController(StoreProductsService service) {
+        this.service = service;
     }
 
-    private final StoreProductsRepository repository;
+    private final StoreProductsService service;
 
     @Secured({"Manager"})
     @PostMapping
     public ResponseEntity<String> addStoreProduct(@RequestBody StoreProduct storeProduct) {
-        repository.addStoreProduct(storeProduct);
-        return ResponseEntity.status(HttpStatus.OK).body(storeProduct.getUpc());
+        return ResponseEntity.status(HttpStatus.OK).body(service.addStoreProduct(storeProduct));
     }
 
     @Secured({"Manager"})
     @DeleteMapping("/{upc}")
     public ResponseEntity<String> deleteStoreProduct(@PathVariable String upc) {
-        repository.deleteStoreProduct(upc);
-        return ResponseEntity.status(HttpStatus.OK).body(upc);
+        return ResponseEntity.status(HttpStatus.OK).body(service.deleteStoreProduct(upc));
     }
 
     @Secured({"Manager"})
     @PutMapping("/{upc}")
-    public ResponseEntity<String> updateStoreProduct(@RequestBody StoreProduct storeProduct, @PathVariable String upc) {
-        storeProduct.setUpc(upc);
-        repository.updateStoreProduct(storeProduct);
-        return ResponseEntity.status(HttpStatus.OK).body(storeProduct.getUpc());
+    public ResponseEntity<String> updateStoreProduct(@RequestBody StoreProduct storeProduct,
+                                                     @PathVariable String upc) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateStoreProduct(storeProduct, upc));
     }
 
     @Secured({"Manager", "Cashier"})
@@ -48,12 +45,12 @@ public class StoreProductsController {
     public ResponseEntity<List<StoreProduct>> getStoreProducts(
             @RequestParam(required = false) Boolean promotional,
             @RequestParam(required = false) String sortBy) {
-        return ResponseEntity.status(HttpStatus.OK).body(repository.getStoreProducts(promotional, sortBy));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getStoreProducts(promotional, sortBy));
     }
 
     @Secured({"Manager", "Cashier"})
     @GetMapping("/search/{upc}")
     public ResponseEntity<StoreProductInfo> getStoreProductInfo(@PathVariable String upc) {
-        return ResponseEntity.status(HttpStatus.OK).body(repository.getStoreProductInfo(upc));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getStoreProductInfo(upc));
     }
 }

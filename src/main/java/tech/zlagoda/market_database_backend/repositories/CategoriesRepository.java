@@ -8,8 +8,6 @@ import tech.zlagoda.market_database_backend.pojos.Category;
 
 import java.util.List;
 
-import static tech.zlagoda.market_database_backend.validators.CategoryValidator.validate;
-
 @Repository
 public class CategoriesRepository {
     @Autowired
@@ -20,7 +18,6 @@ public class CategoriesRepository {
     private final JdbcTemplate jdbc;
 
     public void addCategory(Category category) {
-        validate(category);
         String sql = "INSERT INTO Category (category_number, category_name) VALUES (?, ?);";
         jdbc.update(sql,
                 category.getCategoryNumber(),
@@ -33,7 +30,6 @@ public class CategoriesRepository {
     }
 
     public void updateCategory(Category category) {
-        validate(category);
         String sql = "UPDATE Category SET category_name = ? WHERE category_number = ?;";
         jdbc.update(sql, category.getCategoryName(), category.getCategoryNumber());
     }

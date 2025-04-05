@@ -21,7 +21,6 @@ public class ProductsRepository {
     private final JdbcTemplate jdbc;
 
     public void addProduct(Product product) {
-        validate(product);
         String sql = "INSERT INTO Product (id_product, category_number, product_name, manufacturer, " +
                 "characteristics) VALUES (?, ?, ?, ?, ?);";
         jdbc.update(sql,
@@ -38,7 +37,6 @@ public class ProductsRepository {
     }
 
     public void updateProduct(Product product) {
-        validate(product);
         String sql = "UPDATE Product SET category_number = ?, product_name = ?, manufacturer = ?, " +
                 "characteristics = ? WHERE id_product = ?;";
         jdbc.update(sql,

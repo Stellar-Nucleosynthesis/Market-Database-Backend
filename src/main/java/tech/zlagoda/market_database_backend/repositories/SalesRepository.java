@@ -8,8 +8,6 @@ import tech.zlagoda.market_database_backend.pojos.Sale;
 
 import java.util.List;
 
-import static tech.zlagoda.market_database_backend.validators.SaleValidator.validate;
-
 @Repository
 public class SalesRepository {
     @Autowired
@@ -20,7 +18,6 @@ public class SalesRepository {
     private final JdbcTemplate jdbc;
 
     public void addSale(Sale sale){
-        validate(sale);
         String sql = "INSERT INTO Sale (UPC, receipt_number, product_number, selling_price) VALUES (?, ?, ?, ?);";
         jdbc.update(sql, sale.getUPC(), sale.getReceiptNumber(), sale.getProductNumber(), sale.getSellingPrice());
     }
