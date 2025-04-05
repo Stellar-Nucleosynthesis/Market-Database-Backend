@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Receipt;
 import tech.zlagoda.market_database_backend.pojos.Sale;
 import tech.zlagoda.market_database_backend.repositories.ReceiptsRepository;
 import tech.zlagoda.market_database_backend.repositories.SalesRepository;
+import tech.zlagoda.market_database_backend.repositories.UserInfoRepository;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -18,13 +21,15 @@ import java.util.List;
 @RequestMapping("/receipts")
 public class ReceiptsController {
     @Autowired
-    public ReceiptsController(ReceiptsRepository receiptsRepository, SalesRepository salesRepository) {
+    public ReceiptsController(ReceiptsRepository receiptsRepository, SalesRepository salesRepository, UserInfoRepository userInfoRepository) {
         this.receiptsRepository = receiptsRepository;
         this.salesRepository = salesRepository;
+        this.userInfoRepository = userInfoRepository;
     }
 
     private final ReceiptsRepository receiptsRepository;
     private final SalesRepository salesRepository;
+    private final UserInfoRepository userInfoRepository;
 
     @Secured({"Cashier"})
     @PostMapping
@@ -101,6 +106,9 @@ public class ReceiptsController {
     @GetMapping("/me")
     public ResponseEntity<List<Receipt>> getReceipts(@RequestParam(required = false) Date from,
                                                      @RequestParam(required = false) Date to){
-        throw new UnsupportedOperationException("Unable to get information about \"me\"");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        String idEmployee = userInfoRepository.getUserInfo(username).getEmployee().getIdEmployee();
+        return ResponseEntity.status(HttpStatus.OK).body(getReceipts(idEmployee, from, to).getBody());
     }
 }
