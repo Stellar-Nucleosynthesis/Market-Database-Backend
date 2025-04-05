@@ -15,6 +15,7 @@ public class ProductsErrorHandler {
         } else {
             reason += "Unable to query products information";
         }
+        e.printStackTrace();
         return ResponseEntity.badRequest().body(reason);
     }
 }

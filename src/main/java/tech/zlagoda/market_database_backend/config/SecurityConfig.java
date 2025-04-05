@@ -21,7 +21,7 @@ import tech.zlagoda.market_database_backend.filters.JwtAuthFilter;
 
 @Configuration
 @EnableMethodSecurity(
-        jsr250Enabled = true
+        securedEnabled = true
 )
 @EnableWebSecurity
 public class SecurityConfig {

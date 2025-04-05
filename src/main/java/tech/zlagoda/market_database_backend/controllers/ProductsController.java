@@ -1,9 +1,9 @@
 package tech.zlagoda.market_database_backend.controllers;
 
-import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Product;
 import tech.zlagoda.market_database_backend.repositories.ProductsRepository;
@@ -20,21 +20,21 @@ public class ProductsController {
 
     private final ProductsRepository repository;
 
-    @RolesAllowed({"Manager"})
+    @Secured({"Manager"})
     @PostMapping
     public ResponseEntity<Integer> addProduct(@RequestBody Product product) {
         repository.addProduct(product);
         return ResponseEntity.status(HttpStatus.OK).body(product.getIdProduct());
     }
 
-    @RolesAllowed({"Manager"})
+    @Secured({"Manager"})
     @DeleteMapping("/{idProduct}")
     public ResponseEntity<Integer> deleteCategory(@PathVariable int idProduct) {
         repository.deleteProduct(idProduct);
         return ResponseEntity.status(HttpStatus.OK).body(idProduct);
     }
 
-    @RolesAllowed({"Manager"})
+    @Secured({"Manager"})
     @PutMapping("/{idProduct}")
     public ResponseEntity<Integer> updateProduct(@RequestBody Product product, @PathVariable int idProduct) {
         product.setIdProduct(idProduct);
@@ -42,7 +42,7 @@ public class ProductsController {
         return ResponseEntity.status(HttpStatus.OK).body(product.getIdProduct());
     }
 
-    @RolesAllowed({"Manager", "Cashier"})
+    @Secured({"Manager", "Cashier"})
     @GetMapping("/search")
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false) String productName,

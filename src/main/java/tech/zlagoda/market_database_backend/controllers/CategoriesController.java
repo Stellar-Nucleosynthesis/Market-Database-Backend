@@ -1,9 +1,9 @@
 package tech.zlagoda.market_database_backend.controllers;
 
-import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Category;
 import tech.zlagoda.market_database_backend.repositories.CategoriesRepository;
@@ -20,21 +20,21 @@ public class CategoriesController {
 
     private final CategoriesRepository repository;
 
-    @RolesAllowed("Manager")
+    @Secured("Manager")
     @PostMapping
     public ResponseEntity<Integer> addCategory(@RequestBody Category category) {
         repository.addCategory(category);
         return ResponseEntity.status(HttpStatus.OK).body(category.getCategoryNumber());
     }
 
-    @RolesAllowed("Manager")
+    @Secured("Manager")
     @DeleteMapping("/{categoryNumber}")
     public ResponseEntity<Integer> deleteCategory(@PathVariable int categoryNumber) {
         repository.deleteCategory(categoryNumber);
         return ResponseEntity.status(HttpStatus.OK).body(categoryNumber);
     }
 
-    @RolesAllowed("Manager")
+    @Secured("Manager")
     @PutMapping("/{categoryNumber}")
     public ResponseEntity<Integer> updateCategory(@RequestBody Category category, @PathVariable int categoryNumber) {
         category.setCategoryNumber(categoryNumber);
@@ -42,7 +42,7 @@ public class CategoriesController {
         return ResponseEntity.status(HttpStatus.OK).body(category.getCategoryNumber());
     }
 
-    @RolesAllowed("Manager")
+    @Secured("Manager")
     @GetMapping("/search")
     public ResponseEntity<List<Category>> getCategories(){
         return ResponseEntity.status(HttpStatus.OK).body(repository.getCategories());
