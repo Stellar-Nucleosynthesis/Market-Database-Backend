@@ -41,19 +41,7 @@ public class CustomerCardsRepository {
     }
 
     public List<CustomerCard> getCustomerCards(String surname, Integer percent) {
-        RowMapper<CustomerCard> customerCardRowMapper = (r, i) -> {
-            CustomerCard cc = new CustomerCard();
-            cc.setCardNumber(r.getString("card_number"));
-            cc.setSurname(r.getString("cust_surname"));
-            cc.setName(r.getString("cust_name"));
-            cc.setPatronymic(r.getString("cust_patronymic"));
-            cc.setPhoneNumber(r.getString("phone_number"));
-            cc.setCity(r.getString("city"));
-            cc.setStreet(r.getString("street"));
-            cc.setZipCode(r.getString("zip_code"));
-            cc.setPercent(r.getInt("percent"));
-            return cc;
-        };
+        RowMapper<CustomerCard> customerCardRowMapper = CustomerCard.getRowMapper();
         String sql = "SELECT * FROM Customer_Card";
         if (surname != null && percent != null) {
             sql += " WHERE cust_surname = ? AND percent = ? " +

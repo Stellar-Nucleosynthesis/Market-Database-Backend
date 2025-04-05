@@ -41,16 +41,7 @@ public class ReceiptsRepository {
     }
 
     public List<Receipt> getReceipts(String idEmployee, Date from, Date to) {
-        RowMapper<Receipt> receiptRowMapper = (r, i) -> {
-            Receipt receipt = new Receipt();
-            receipt.setReceiptNumber(r.getString("receipt_number"));
-            receipt.setIdEmployee(r.getString("id_employee"));
-            receipt.setCardNumber(r.getString("card_number"));
-            receipt.setPrintDate(r.getDate("print_date"));
-            receipt.setSumTotal(r.getBigDecimal("sum_total"));
-            receipt.setVat(r.getBigDecimal("vat"));
-            return receipt;
-        };
+        RowMapper<Receipt> receiptRowMapper = Receipt.getRowMapper();
         String sql = "SELECT * FROM Receipt";
         List<Object> params = new ArrayList<>();
         if (idEmployee != null || from != null || to != null) {
@@ -75,16 +66,7 @@ public class ReceiptsRepository {
     }
 
     public Receipt getReceipt(String receiptNumber) {
-        RowMapper<Receipt> receiptRowMapper = (r, i) -> {
-            Receipt receipt = new Receipt();
-            receipt.setReceiptNumber(r.getString("receipt_number"));
-            receipt.setIdEmployee(r.getString("id_employee"));
-            receipt.setCardNumber(r.getString("card_number"));
-            receipt.setPrintDate(r.getDate("print_date"));
-            receipt.setSumTotal(r.getBigDecimal("sum_total"));
-            receipt.setVat(r.getBigDecimal("vat"));
-            return receipt;
-        };
+        RowMapper<Receipt> receiptRowMapper = Receipt.getRowMapper();
         String sql = "SELECT * FROM Receipt WHERE receipt_number = ?;";
         return jdbc.query(sql, receiptRowMapper, receiptNumber).get(0);
     }

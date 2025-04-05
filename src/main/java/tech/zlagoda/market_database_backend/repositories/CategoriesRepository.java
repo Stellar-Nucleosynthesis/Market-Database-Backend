@@ -39,12 +39,7 @@ public class CategoriesRepository {
     }
 
     public List<Category> getCategories() {
-        RowMapper<Category> categoryRowMapper = (r, i) -> {
-            Category category = new Category();
-            category.setCategoryNumber(r.getInt("category_number"));
-            category.setCategoryName(r.getString("category_name"));
-            return category;
-        };
+        RowMapper<Category> categoryRowMapper = Category.getRowMapper();
         String sql = "SELECT * FROM Category " +
                      "ORDER BY category_name ASC;";
         return jdbc.query(sql, categoryRowMapper);

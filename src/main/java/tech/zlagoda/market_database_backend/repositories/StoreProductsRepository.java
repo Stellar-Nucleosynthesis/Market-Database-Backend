@@ -52,16 +52,7 @@ public class StoreProductsRepository {
     }
 
     public List<StoreProduct> getStoreProducts(Boolean promotional, String sortBy) {
-        RowMapper<StoreProduct> storeProductRowMapper = (r, rowNum) -> {
-            StoreProduct storeProduct = new StoreProduct();
-            storeProduct.setUpc(r.getString("UPC"));
-            storeProduct.setUpcProm(r.getString("UPC_prom"));
-            storeProduct.setIdProduct(r.getInt("id_product"));
-            storeProduct.setSellingPrice(r.getBigDecimal("selling_price"));
-            storeProduct.setProductsNumber(r.getInt("products_number"));
-            storeProduct.setPromotionalProduct(r.getBoolean("promotional_product"));
-            return storeProduct;
-        };
+        RowMapper<StoreProduct> storeProductRowMapper = StoreProduct.getRowMapper();
         String sql = "SELECT * FROM Store_Product";
         if(promotional != null) {
             sql += " WHERE promotional_product = ?";
@@ -79,15 +70,7 @@ public class StoreProductsRepository {
     }
 
     public StoreProductInfo getStoreProductInfo(String upc) {
-        RowMapper<StoreProductInfo> storeProductInfoRowMapper = (r, rowNum) -> {
-            StoreProductInfo storeProductInfo = new StoreProductInfo();
-            storeProductInfo.setSellingPrice(r.getBigDecimal("selling_price"));
-            storeProductInfo.setProductsNumber(r.getInt("products_number"));
-            storeProductInfo.setProductName(r.getString("product_name"));
-            storeProductInfo.setManufacturer(r.getString("manufacturer"));
-            storeProductInfo.setCharacteristics(r.getString("characteristics"));
-            return storeProductInfo;
-        };
+        RowMapper<StoreProductInfo> storeProductInfoRowMapper = StoreProductInfo.getRowMapper();
         String sql = "SELECT DISTINCT selling_price, products_number, product_name, manufacturer, characteristics" +
                     " FROM Store_Product, Product" +
                     " WHERE UPC = ? AND Store_Product.id_product = Product.id_product;";

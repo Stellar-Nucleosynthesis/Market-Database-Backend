@@ -1,5 +1,7 @@
 package tech.zlagoda.market_database_backend.pojos;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -111,5 +113,24 @@ public class Employee {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public static RowMapper<Employee> getRowMapper() {
+        return (r, i) -> {
+            Employee employee = new Employee();
+            employee.setIdEmployee(r.getString("id_employee"));
+            employee.setSurname(r.getString("empl_surname"));
+            employee.setName(r.getString("empl_name"));
+            employee.setPatronymic(r.getString("empl_patronymic"));
+            employee.setRole(r.getString("empl_role"));
+            employee.setSalary(r.getBigDecimal("salary"));
+            employee.setDateOfBirth(r.getDate("date_of_birth"));
+            employee.setDateOfStart(r.getDate("date_of_start"));
+            employee.setPhoneNumber(r.getString("phone_number"));
+            employee.setCity(r.getString("city"));
+            employee.setStreet(r.getString("street"));
+            employee.setZipCode(r.getString("zip_code"));
+            return employee;
+        };
     }
 }

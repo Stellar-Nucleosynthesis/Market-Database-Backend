@@ -1,12 +1,12 @@
 package tech.zlagoda.market_database_backend.controllers;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.CustomerCard;
 import tech.zlagoda.market_database_backend.repositories.CustomerCardsRepository;
-import tech.zlagoda.market_database_backend.security.EmployeeCheck;
 
 import java.util.List;
 
@@ -21,21 +21,21 @@ public class CustomerCardsController {
 
     private final CustomerCardsRepository repository;
 
-    @EmployeeCheck
+    @RolesAllowed({"Manager", "Cashier"})
     @PostMapping
     public ResponseEntity<String> addCustomerCard(@RequestBody CustomerCard customerCard) {
         repository.addCustomerCard(customerCard);
         return ResponseEntity.status(HttpStatus.OK).body(customerCard.getCardNumber());
     }
 
-    @EmployeeCheck
+    @RolesAllowed({"Manager", "Cashier"})
     @DeleteMapping("/{cardNumber}")
     public ResponseEntity<String> deleteCustomerCard(@PathVariable String cardNumber) {
         repository.deleteCustomerCard(cardNumber);
         return ResponseEntity.status(HttpStatus.OK).body(cardNumber);
     }
 
-    @EmployeeCheck
+    @RolesAllowed({"Manager", "Cashier"})
     @PutMapping("/{cardNumber}")
     public ResponseEntity<String> updateCustomerCard(
             @RequestBody CustomerCard customerCard,
@@ -45,7 +45,7 @@ public class CustomerCardsController {
         return ResponseEntity.status(HttpStatus.OK).body(customerCard.getCardNumber());
     }
 
-    @EmployeeCheck
+    @RolesAllowed({"Manager", "Cashier"})
     @GetMapping("/search")
     public ResponseEntity<List<CustomerCard>> getCustomerCards(
             @RequestParam(required = false) String surname,

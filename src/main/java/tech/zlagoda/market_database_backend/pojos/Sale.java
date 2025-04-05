@@ -1,5 +1,7 @@
 package tech.zlagoda.market_database_backend.pojos;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import java.math.BigDecimal;
 
 public class Sale {
@@ -38,5 +40,16 @@ public class Sale {
 
     public void setSellingPrice(BigDecimal sellingPrice) {
         this.sellingPrice = sellingPrice;
+    }
+
+    public static RowMapper<Sale> getRowMapper() {
+        return (r, i) -> {
+            Sale sale = new Sale();
+            sale.setUPC(r.getString("UPC"));
+            sale.setReceiptNumber(r.getString("receipt_number"));
+            sale.setProductNumber(r.getInt("product_number"));
+            sale.setSellingPrice(r.getBigDecimal("selling_price"));
+            return sale;
+        };
     }
 }

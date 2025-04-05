@@ -50,15 +50,7 @@ public class ProductsRepository {
     }
 
     public List<Product> getProducts(String productName, Integer categoryNumber, String sortBy) {
-        RowMapper<Product> productRowMapper = (r, i) -> {
-            Product product = new Product();
-            product.setIdProduct(r.getInt("id_product"));
-            product.setCategoryNumber(r.getInt("category_number"));
-            product.setProductName(r.getString("product_name"));
-            product.setManufacturer(r.getString("manufacturer"));
-            product.setCharacteristics(r.getString("characteristics"));
-            return product;
-        };
+        RowMapper<Product> productRowMapper = Product.getRowMapper();
         String sql = "SELECT * FROM Product";
         List<Object> params = new ArrayList<>();
         if (productName != null || categoryNumber != null) {

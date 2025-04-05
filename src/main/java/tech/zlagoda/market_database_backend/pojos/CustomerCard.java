@@ -1,5 +1,7 @@
 package tech.zlagoda.market_database_backend.pojos;
 
+import org.springframework.jdbc.core.RowMapper;
+
 public class CustomerCard {
     private String cardNumber;
     private String surname;
@@ -81,5 +83,21 @@ public class CustomerCard {
 
     public void setPercent(int percent) {
         this.percent = percent;
+    }
+
+    public static RowMapper<CustomerCard> getRowMapper() {
+        return  (r, i) -> {
+            CustomerCard cc = new CustomerCard();
+            cc.setCardNumber(r.getString("card_number"));
+            cc.setSurname(r.getString("cust_surname"));
+            cc.setName(r.getString("cust_name"));
+            cc.setPatronymic(r.getString("cust_patronymic"));
+            cc.setPhoneNumber(r.getString("phone_number"));
+            cc.setCity(r.getString("city"));
+            cc.setStreet(r.getString("street"));
+            cc.setZipCode(r.getString("zip_code"));
+            cc.setPercent(r.getInt("percent"));
+            return cc;
+        };
     }
 }

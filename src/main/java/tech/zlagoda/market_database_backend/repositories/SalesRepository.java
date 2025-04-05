@@ -31,14 +31,7 @@ public class SalesRepository {
     }
 
     public List<Sale> getSales(String receiptNumber){
-        RowMapper<Sale> receiptRowMapper = (r, i) -> {
-            Sale sale = new Sale();
-            sale.setUPC(r.getString("UPC"));
-            sale.setReceiptNumber(r.getString("receipt_number"));
-            sale.setProductNumber(r.getInt("product_number"));
-            sale.setSellingPrice(r.getBigDecimal("selling_price"));
-            return sale;
-        };
+        RowMapper<Sale> receiptRowMapper = Sale.getRowMapper();
         String sql = "SELECT * FROM Sale WHERE receipt_number = ?;";
         return jdbc.query(sql, receiptRowMapper, receiptNumber);
     }

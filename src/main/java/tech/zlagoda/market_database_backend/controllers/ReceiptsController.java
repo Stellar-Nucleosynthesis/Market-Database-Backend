@@ -1,5 +1,6 @@
 package tech.zlagoda.market_database_backend.controllers;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,9 +9,6 @@ import tech.zlagoda.market_database_backend.pojos.Receipt;
 import tech.zlagoda.market_database_backend.pojos.Sale;
 import tech.zlagoda.market_database_backend.repositories.ReceiptsRepository;
 import tech.zlagoda.market_database_backend.repositories.SalesRepository;
-import tech.zlagoda.market_database_backend.security.CashierCheck;
-import tech.zlagoda.market_database_backend.security.EmployeeCheck;
-import tech.zlagoda.market_database_backend.security.ManagerCheck;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -28,7 +26,7 @@ public class ReceiptsController {
     private final ReceiptsRepository receiptsRepository;
     private final SalesRepository salesRepository;
 
-    @CashierCheck
+    @RolesAllowed({"Cashier"})
     @PostMapping
     public ResponseEntity<String> addReceipt(@RequestBody Receipt receipt) {
         receiptsRepository.addReceipt(receipt);
@@ -38,7 +36,7 @@ public class ReceiptsController {
         return ResponseEntity.status(HttpStatus.OK).body(receipt.getReceiptNumber());
     }
 
-    @ManagerCheck
+    @RolesAllowed({"Manager"})
     @DeleteMapping("/{receiptNumber}")
     public ResponseEntity<String> deleteReceipt(@PathVariable String receiptNumber) {
         receiptsRepository.deleteReceipt(receiptNumber);
@@ -46,7 +44,7 @@ public class ReceiptsController {
         return ResponseEntity.status(HttpStatus.OK).body(receiptNumber);
     }
 
-    @ManagerCheck
+    @RolesAllowed({"Manager"})
     @GetMapping("/search")
     public ResponseEntity<List<Receipt>> getReceipts(
             @RequestParam(required = false) String idEmployee,
@@ -59,7 +57,7 @@ public class ReceiptsController {
         return ResponseEntity.status(HttpStatus.OK).body(receipts);
     }
 
-    @EmployeeCheck
+    @RolesAllowed({"Manager", "Cashier"})
     @GetMapping("/search/{receiptNumber}")
     public ResponseEntity<Receipt> getReceipt(@PathVariable String receiptNumber) {
         Receipt receipt = receiptsRepository.getReceipt(receiptNumber);
@@ -67,7 +65,7 @@ public class ReceiptsController {
         return ResponseEntity.status(HttpStatus.OK).body(receipt);
     }
 
-    @ManagerCheck
+    @RolesAllowed({"Manager"})
     @GetMapping("/total")
     public ResponseEntity<BigDecimal> getTotal(
             @RequestParam(required = false) String idEmployee,
@@ -82,7 +80,7 @@ public class ReceiptsController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @ManagerCheck
+    @RolesAllowed({"Manager"})
     @GetMapping("/quantity/{upc}")
     public ResponseEntity<Integer> getQuantity(
             @PathVariable String upc,
@@ -99,7 +97,7 @@ public class ReceiptsController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @CashierCheck
+    @RolesAllowed({"Cashier"})
     @GetMapping("/me")
     public ResponseEntity<List<Receipt>> getReceipts(@RequestParam(required = false) Date from,
                                                      @RequestParam(required = false) Date to){

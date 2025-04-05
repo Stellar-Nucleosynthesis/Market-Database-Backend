@@ -65,22 +65,7 @@ public class EmployeesRepository {
     }
 
     public List<Employee> getEmployees(String surname, String role) {
-        RowMapper<Employee> employeeRowMapper = (r, i) -> {
-            Employee employee = new Employee();
-            employee.setIdEmployee(r.getString("id_employee"));
-            employee.setSurname(r.getString("empl_surname"));
-            employee.setName(r.getString("empl_name"));
-            employee.setPatronymic(r.getString("empl_patronymic"));
-            employee.setRole(r.getString("empl_role"));
-            employee.setSalary(r.getBigDecimal("salary"));
-            employee.setDateOfBirth(r.getDate("date_of_birth"));
-            employee.setDateOfStart(r.getDate("date_of_start"));
-            employee.setPhoneNumber(r.getString("phone_number"));
-            employee.setCity(r.getString("city"));
-            employee.setStreet(r.getString("street"));
-            employee.setZipCode(r.getString("zip_code"));
-            return employee;
-        };
+        RowMapper<Employee> employeeRowMapper = Employee.getRowMapper();
         String sql = "SELECT * FROM Employee";
         if (surname != null && role != null) {
             sql += " WHERE empl_surname = ? AND empl_role = ? " +

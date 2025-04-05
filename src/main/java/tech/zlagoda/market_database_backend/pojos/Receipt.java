@@ -1,5 +1,7 @@
 package tech.zlagoda.market_database_backend.pojos;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -69,5 +71,18 @@ public class Receipt {
 
     public void setSales(List<Sale> sales) {
         this.sales = sales;
+    }
+
+    public static RowMapper<Receipt> getRowMapper() {
+        return (r, i) -> {
+            Receipt receipt = new Receipt();
+            receipt.setReceiptNumber(r.getString("receipt_number"));
+            receipt.setIdEmployee(r.getString("id_employee"));
+            receipt.setCardNumber(r.getString("card_number"));
+            receipt.setPrintDate(r.getDate("print_date"));
+            receipt.setSumTotal(r.getBigDecimal("sum_total"));
+            receipt.setVat(r.getBigDecimal("vat"));
+            return receipt;
+        };
     }
 }
