@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import tech.zlagoda.market_database_backend.pojos.Credentials;
 import tech.zlagoda.market_database_backend.pojos.Employee;
 import tech.zlagoda.market_database_backend.services.EmployeesService;
 
@@ -37,7 +36,6 @@ public class EmployeesController {
     @PutMapping("/{idEmployee}")
     public ResponseEntity<String> updateEmployee(
             @RequestBody Employee employee,
-            @RequestBody Credentials credentials,
             @PathVariable String idEmployee){
         return ResponseEntity.status(HttpStatus.OK).body(service.updateEmployee(employee, idEmployee));
     }

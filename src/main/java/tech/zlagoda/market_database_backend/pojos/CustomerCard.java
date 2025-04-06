@@ -86,7 +86,7 @@ public class CustomerCard {
     }
 
     public static RowMapper<CustomerCard> getRowMapper() {
-        return  (r, i) -> {
+        return (r, i) -> {
             CustomerCard cc = new CustomerCard();
             cc.setCardNumber(r.getString("card_number"));
             cc.setSurname(r.getString("cust_surname"));

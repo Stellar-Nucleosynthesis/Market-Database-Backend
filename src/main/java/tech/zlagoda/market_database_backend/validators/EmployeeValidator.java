@@ -2,7 +2,6 @@ package tech.zlagoda.market_database_backend.validators;
 
 import tech.zlagoda.market_database_backend.pojos.Employee;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -38,5 +37,6 @@ public class EmployeeValidator {
         validateString(employee.getCity(), "employee city", 0, 50);
         validateString(employee.getStreet(), "employee street", 0, 50);
         validateString(employee.getZipCode(), "employee zipcode", 0, 9);
+        validateString(employee.getPassword(), "employee password", 0, 100);
     }
 }

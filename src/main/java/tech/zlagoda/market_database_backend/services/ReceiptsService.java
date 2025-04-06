@@ -8,7 +8,6 @@ import tech.zlagoda.market_database_backend.pojos.Receipt;
 import tech.zlagoda.market_database_backend.pojos.Sale;
 import tech.zlagoda.market_database_backend.repositories.ReceiptsRepository;
 import tech.zlagoda.market_database_backend.repositories.SalesRepository;
-import tech.zlagoda.market_database_backend.repositories.UserInfoRepository;
 import tech.zlagoda.market_database_backend.validators.SaleValidator;
 
 import java.math.BigDecimal;
@@ -20,17 +19,13 @@ import static tech.zlagoda.market_database_backend.validators.ReceiptValidator.v
 @Service
 public class ReceiptsService {
     @Autowired
-    public ReceiptsService(ReceiptsRepository receiptsRepository,
-                           SalesRepository salesRepository,
-                           UserInfoRepository userInfoRepository) {
+    public ReceiptsService(ReceiptsRepository receiptsRepository, SalesRepository salesRepository) {
         this.receiptsRepository = receiptsRepository;
         this.salesRepository = salesRepository;
-        this.userInfoRepository = userInfoRepository;
     }
 
     private final ReceiptsRepository receiptsRepository;
     private final SalesRepository salesRepository;
-    private final UserInfoRepository userInfoRepository;
 
     public String addReceipt(Receipt receipt) {
         validate(receipt);
@@ -86,8 +81,7 @@ public class ReceiptsService {
 
     public List<Receipt> getMyReceipts(Date from, Date to){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        String idEmployee = userInfoRepository.getUserInfo(username).getEmployee().getIdEmployee();
+        String idEmployee = authentication.getName();
         return getReceipts(idEmployee, from, to);
     }
 }

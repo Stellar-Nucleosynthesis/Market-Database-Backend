@@ -21,8 +21,9 @@ public class EmployeesRepository {
 
     public void addEmployee(Employee employee) {
         String sql = "INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_patronymic, " +
-                "empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                "empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code, " +
+                "password) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         jdbc.update(sql,
                 employee.getIdEmployee(),
                 employee.getSurname(),
@@ -35,7 +36,8 @@ public class EmployeesRepository {
                 employee.getPhoneNumber(),
                 employee.getCity(),
                 employee.getStreet(),
-                employee.getZipCode());
+                employee.getZipCode(),
+                employee.getPassword());
     }
 
     public void deleteEmployee(String idEmployee) {
@@ -45,7 +47,8 @@ public class EmployeesRepository {
 
     public void updateEmployee(Employee employee) {
         String sql = "UPDATE Employee SET empl_surname = ?, empl_name = ?, empl_patronymic = ?, empl_role = ?, " +
-                "salary = ?, date_of_birth = ?, date_of_start = ?, phone_number = ?, city = ?, street = ?, zip_code = ? " +
+                "salary = ?, date_of_birth = ?, date_of_start = ?, phone_number = ?, city = ?, street = ?, " +
+                "zip_code = ?, password = ? " +
                 "WHERE id_employee = ?;";
         jdbc.update(sql,
                 employee.getSurname(),
@@ -59,6 +62,7 @@ public class EmployeesRepository {
                 employee.getCity(),
                 employee.getStreet(),
                 employee.getZipCode(),
+                employee.getPassword(),
                 employee.getIdEmployee());
     }
 

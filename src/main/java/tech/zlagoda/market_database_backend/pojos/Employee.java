@@ -19,6 +19,8 @@ public class Employee {
     private String street;
     private String zipCode;
 
+    private String password;
+
     public String getIdEmployee() {
         return idEmployee;
     }
@@ -115,6 +117,14 @@ public class Employee {
         this.zipCode = zipCode;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public static RowMapper<Employee> getRowMapper() {
         return (r, i) -> {
             Employee employee = new Employee();
@@ -130,6 +140,7 @@ public class Employee {
             employee.setCity(r.getString("city"));
             employee.setStreet(r.getString("street"));
             employee.setZipCode(r.getString("zip_code"));
+            employee.setPassword(r.getString("password"));
             return employee;
         };
     }

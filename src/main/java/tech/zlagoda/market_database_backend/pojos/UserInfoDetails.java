@@ -15,10 +15,10 @@ public class UserInfoDetails implements UserDetails {
     private final String password;
     private final List<GrantedAuthority> authorities;
 
-    public UserInfoDetails(UserInfo userInfo) {
-        this.username = userInfo.getUsername();
-        this.password = userInfo.getPassword();
-        this.authorities = Stream.of(userInfo.getEmployee().getRole())
+    public UserInfoDetails(Employee employee) {
+        this.username = employee.getIdEmployee();
+        this.password = employee.getPassword();
+        this.authorities = Stream.of(employee.getRole())
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
