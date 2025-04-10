@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Receipt;
+import tech.zlagoda.market_database_backend.pojos.RequestResponse;
 import tech.zlagoda.market_database_backend.services.ReceiptsService;
 
 import java.math.BigDecimal;
@@ -24,14 +25,16 @@ public class ReceiptsController {
 
     @Secured({"Cashier"})
     @PostMapping
-    public ResponseEntity<String> addReceipt(@RequestBody Receipt receipt) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.addReceipt(receipt));
+    public ResponseEntity<RequestResponse> addReceipt(@RequestBody Receipt receipt) {
+        String id = service.addReceipt(receipt);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})
     @DeleteMapping("/{receiptNumber}")
-    public ResponseEntity<String> deleteReceipt(@PathVariable String receiptNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteReceipt(receiptNumber));
+    public ResponseEntity<RequestResponse> deleteReceipt(@PathVariable String receiptNumber) {
+        String id = service.deleteReceipt(receiptNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})

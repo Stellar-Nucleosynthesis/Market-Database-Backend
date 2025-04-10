@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import tech.zlagoda.market_database_backend.pojos.RequestResponse;
 import tech.zlagoda.market_database_backend.pojos.StoreProduct;
 import tech.zlagoda.market_database_backend.pojos.StoreProductInfo;
 import tech.zlagoda.market_database_backend.services.StoreProductsService;
@@ -23,21 +24,24 @@ public class StoreProductsController {
 
     @Secured({"Manager"})
     @PostMapping
-    public ResponseEntity<String> addStoreProduct(@RequestBody StoreProduct storeProduct) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.addStoreProduct(storeProduct));
+    public ResponseEntity<RequestResponse> addStoreProduct(@RequestBody StoreProduct storeProduct) {
+        String id = service.addStoreProduct(storeProduct);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})
     @DeleteMapping("/{upc}")
-    public ResponseEntity<String> deleteStoreProduct(@PathVariable String upc) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteStoreProduct(upc));
+    public ResponseEntity<RequestResponse> deleteStoreProduct(@PathVariable String upc) {
+        String id = service.deleteStoreProduct(upc);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})
     @PutMapping("/{upc}")
-    public ResponseEntity<String> updateStoreProduct(@RequestBody StoreProduct storeProduct,
+    public ResponseEntity<RequestResponse> updateStoreProduct(@RequestBody StoreProduct storeProduct,
                                                      @PathVariable String upc) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateStoreProduct(storeProduct, upc));
+        String id = service.updateStoreProduct(storeProduct, upc);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager", "Cashier"})

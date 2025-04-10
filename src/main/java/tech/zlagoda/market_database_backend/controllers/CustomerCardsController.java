@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.CustomerCard;
+import tech.zlagoda.market_database_backend.pojos.RequestResponse;
 import tech.zlagoda.market_database_backend.services.CustomerCardsService;
 
 import java.util.List;
@@ -23,22 +24,25 @@ public class CustomerCardsController {
 
     @Secured({"Manager", "Cashier"})
     @PostMapping
-    public ResponseEntity<String> addCustomerCard(@RequestBody CustomerCard customerCard) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.addCustomerCard(customerCard));
+    public ResponseEntity<RequestResponse> addCustomerCard(@RequestBody CustomerCard customerCard) {
+        String id = service.addCustomerCard(customerCard);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager", "Cashier"})
     @DeleteMapping("/{cardNumber}")
-    public ResponseEntity<String> deleteCustomerCard(@PathVariable String cardNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteCustomerCard(cardNumber));
+    public ResponseEntity<RequestResponse> deleteCustomerCard(@PathVariable String cardNumber) {
+        String id = service.deleteCustomerCard(cardNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager", "Cashier"})
     @PutMapping("/{cardNumber}")
-    public ResponseEntity<String> updateCustomerCard(
+    public ResponseEntity<RequestResponse> updateCustomerCard(
             @RequestBody CustomerCard customerCard,
             @PathVariable String cardNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateCustomerCard(customerCard, cardNumber));
+        String id = service.updateCustomerCard(customerCard, cardNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager", "Cashier"})

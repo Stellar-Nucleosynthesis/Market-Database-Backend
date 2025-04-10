@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Product;
+import tech.zlagoda.market_database_backend.pojos.RequestResponse;
 import tech.zlagoda.market_database_backend.services.ProductsService;
 
 import java.util.List;
@@ -22,23 +23,26 @@ public class ProductsController {
 
     @Secured({"Manager"})
     @PostMapping
-    public ResponseEntity<Integer> addProduct(@RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.addProduct(product));
+    public ResponseEntity<RequestResponse> addProduct(@RequestBody Product product) {
+        String id = String.valueOf(service.addProduct(product));
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})
     @DeleteMapping("/{idProduct}")
-    public ResponseEntity<Integer> deleteProduct(@PathVariable int idProduct) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteProduct(idProduct));
+    public ResponseEntity<RequestResponse> deleteProduct(@PathVariable int idProduct) {
+        String id = String.valueOf(service.deleteProduct(idProduct));
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})
     @PutMapping("/{idProduct}")
-    public ResponseEntity<Integer> updateProduct(@RequestBody Product product, @PathVariable int idProduct) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateProduct(product, idProduct));
+    public ResponseEntity<RequestResponse> updateProduct(@RequestBody Product product, @PathVariable int idProduct) {
+        String id = String.valueOf(service.updateProduct(product, idProduct));
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
-    @Secured({"Manager", "Cashier"})
+    @Secured({"Cashier"})
     @GetMapping("/search")
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false) String productName,

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Employee;
+import tech.zlagoda.market_database_backend.pojos.RequestResponse;
 import tech.zlagoda.market_database_backend.services.EmployeesService;
 
 import java.util.List;
@@ -22,22 +23,25 @@ public class EmployeesController {
 
     @Secured({"Manager"})
     @PostMapping
-    public ResponseEntity<String> addEmployee(@RequestBody Employee employee) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.addEmployee(employee));
+    public ResponseEntity<RequestResponse> addEmployee(@RequestBody Employee employee) {
+        String id = service.addEmployee(employee);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})
     @DeleteMapping("/{idEmployee}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable String idEmployee){
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteEmployee(idEmployee));
+    public ResponseEntity<RequestResponse> deleteEmployee(@PathVariable String idEmployee){
+        String id = service.deleteEmployee(idEmployee);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})
     @PutMapping("/{idEmployee}")
-    public ResponseEntity<String> updateEmployee(
+    public ResponseEntity<RequestResponse> updateEmployee(
             @RequestBody Employee employee,
             @PathVariable String idEmployee){
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateEmployee(employee, idEmployee));
+        String id = service.updateEmployee(employee, idEmployee);
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured({"Manager"})

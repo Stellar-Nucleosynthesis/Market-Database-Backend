@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import tech.zlagoda.market_database_backend.pojos.Category;
+import tech.zlagoda.market_database_backend.pojos.RequestResponse;
 import tech.zlagoda.market_database_backend.services.CategoriesService;
 
 import java.util.List;
@@ -22,20 +23,23 @@ public class CategoriesController {
 
     @Secured("Manager")
     @PostMapping
-    public ResponseEntity<Integer> addCategory(@RequestBody Category category) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.addCategory(category));
+    public ResponseEntity<RequestResponse> addCategory(@RequestBody Category category) {
+        String id = String.valueOf(service.addCategory(category));
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured("Manager")
     @DeleteMapping("/{categoryNumber}")
-    public ResponseEntity<Integer> deleteCategory(@PathVariable int categoryNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.deleteCategory(categoryNumber));
+    public ResponseEntity<RequestResponse> deleteCategory(@PathVariable int categoryNumber) {
+        String id = String.valueOf(service.deleteCategory(categoryNumber));
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured("Manager")
     @PutMapping("/{categoryNumber}")
-    public ResponseEntity<Integer> updateCategory(@RequestBody Category category, @PathVariable int categoryNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateCategory(category, categoryNumber));
+    public ResponseEntity<RequestResponse> updateCategory(@RequestBody Category category, @PathVariable int categoryNumber) {
+        String id = String.valueOf(service.updateCategory(category, categoryNumber));
+        return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
     @Secured("Manager")

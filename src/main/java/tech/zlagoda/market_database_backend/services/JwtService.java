@@ -1,5 +1,6 @@
 package tech.zlagoda.market_database_backend.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,8 @@ import java.util.function.Function;
 
 @Component
 public class JwtService {
-
-    public static final String SECRET = "a2b54ea97bc7e8d681e8462182463faea4d9138a09b96c762e23f919609ac0c9";
+    @Value("${name.service.url}")
+    public static String SECRET;
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
