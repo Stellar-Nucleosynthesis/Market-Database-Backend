@@ -16,6 +16,6 @@ public class CustomerCardsErrorHandler {
         } else {
             reason += "Unable to query customer cards information";
         }
-        return ResponseEntity.badRequest().body(new RequestResponse(null, true, reason));
+        return ResponseEntity.badRequest().body(new RequestResponse(null, false, reason));
     }
 }

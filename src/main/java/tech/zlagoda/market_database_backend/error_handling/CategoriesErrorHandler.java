@@ -16,6 +16,6 @@ public class CategoriesErrorHandler {
         } else {
             reason += "Unable to query category information";
         }
-        return ResponseEntity.badRequest().body(new RequestResponse(null, true, reason));
+        return ResponseEntity.badRequest().body(new RequestResponse(null, false, reason));
     }
 }

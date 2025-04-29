@@ -17,6 +17,6 @@ public class AuthErrorHandler {
         } else {
             reason += "Unable to log in";
         }
-        return ResponseEntity.badRequest().body(new RequestResponse(null, true, reason));
+        return ResponseEntity.badRequest().body(new RequestResponse(null, false, reason));
     }
 }
