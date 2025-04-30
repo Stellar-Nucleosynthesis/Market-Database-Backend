@@ -74,34 +74,29 @@ public class SpecificInfoRepository {
 
     public List<EmployeeAverageSaleInfo> getAverageCashierSale() {
         RowMapper<EmployeeAverageSaleInfo> rm = EmployeeAverageSaleInfo.getRowMapper();
-        String sql = "SELECT *, " +
-                    "    AVG(s.selling_price) AS average_sale" +
-                    " FROM " +
-                    "    Employee e" +
-                    " JOIN " +
-                    "    Receipt r ON e.id_employee = r.id_employee" +
-                    " JOIN " +
-                    "    Sale s ON r.receipt_number = s.receipt_number" +
-                    " GROUP BY " +
-                    "    e.id_employee;";
+        String sql = "SELECT *, AVG(s.selling_price) AS average_sale" +
+                    " FROM Employee e" +
+                    " JOIN Receipt r ON e.id_employee = r.id_employee" +
+                    " JOIN Sale s ON r.receipt_number = s.receipt_number" +
+                    " GROUP BY e.id_employee;";
         return jdbc.query(sql, rm);
     }
 
     public List<StoreProductInfo> getUnsoldWithNoDiscount(Date from){
         RowMapper<StoreProductInfo> rm = StoreProductInfo.getRowMapper();
-        String sql = "SELECT DISTINCT sp.selling_price, products_number, product_name, manufacturer, characteristics" +
-                    " FROM " +
-                    "    Store_Product sp, Product p" +
-                    " LEFT JOIN " +
-                    "    Sale s ON sp.UPC = s.UPC AND s.receipt_number IN (" +
-                    "        SELECT receipt_number " +
-                    "        FROM Receipt " +
-                    "        WHERE print_date >= ?" +
-                    "    )" +
-                    " WHERE " +
-                    "    s.UPC IS NULL" +
-                    "    AND sp.promotional_product = 0 " +
-                    "    AND sp.id_product = p.id_product;";
+        String sql = "SELECT DISTINCT sp.selling_price, sp.products_number, " +
+                    " p.product_name, p.manufacturer, p.characteristics, p.UPC" +
+                    " FROM Store_Product sp" +
+                    " JOIN Product p ON sp.id_product = p.id_product" +
+                    " WHERE sp.promotional_product = 0 AND NOT EXISTS (" +
+                    "       SELECT *" +
+                    "       FROM Sale s" +
+                    "       WHERE s.UPC = sp.UPC AND NOT EXISTS (" +
+                    "              SELECT *" +
+                    "              FROM Receipt r" +
+                    "              WHERE r.receipt_number = s.receipt_number AND r.print_date < ?" +
+                    "               )" +
+                    " );";
         return jdbc.query(sql, rm, from);
     }
 }
