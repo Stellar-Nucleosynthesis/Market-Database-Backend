@@ -13,7 +13,9 @@ public class ReceiptValidator {
         }
         validateString(receipt.getReceiptNumber(), "receipt number", 1,10);
         validateString(receipt.getIdEmployee(), "receipt employee ID", 1,10);
-        validateString(receipt.getCardNumber(), "receipt card number", 1,13);
+        if(receipt.getCardNumber() != null) {
+            validateString(receipt.getCardNumber(), "customer card number", 1,13);
+        }
         if (receipt.getPrintDate() == null) {
             throw new IllegalArgumentException("Illegal receipt print date");
         }
