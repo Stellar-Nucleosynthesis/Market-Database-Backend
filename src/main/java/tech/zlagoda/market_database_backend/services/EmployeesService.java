@@ -28,7 +28,7 @@ public class EmployeesService implements UserDetailsService {
     private final PasswordEncoder encoder;
 
     public String addEmployee(Employee employee){
-        validate(employee);
+        validate(employee, true);
         employee.setPassword(encoder.encode(employee.getPassword()));
         repository.addEmployee(employee);
         return employee.getIdEmployee();
@@ -40,10 +40,12 @@ public class EmployeesService implements UserDetailsService {
     }
 
     public String updateEmployee(Employee employee, String idEmployee){
-        validate(employee);
+        validate(employee, false);
         employee.setIdEmployee(idEmployee);
-        employee.setPassword(encoder.encode(employee.getPassword()));
         repository.updateEmployee(employee);
+        if(employee.getPassword() != null){
+            repository.updatePassword(idEmployee, encoder.encode(employee.getPassword()));
+        }
         return employee.getIdEmployee();
     }
 

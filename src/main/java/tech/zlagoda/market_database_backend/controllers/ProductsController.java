@@ -42,7 +42,7 @@ public class ProductsController {
         return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
-    @Secured({"Cashier"})
+    @Secured({"Manager", "Cashier"})
     @GetMapping("/search")
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false) String productName,

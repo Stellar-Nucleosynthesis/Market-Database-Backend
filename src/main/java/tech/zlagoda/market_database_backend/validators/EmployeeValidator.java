@@ -8,7 +8,18 @@ import java.time.LocalDate;
 import static tech.zlagoda.market_database_backend.validators.ValidationUtils.*;
 
 public class EmployeeValidator {
-    public static void validate(Employee employee) {
+    public static void validate(Employee employee, boolean requirePasswd){
+        validate(employee);
+        if(requirePasswd){
+            validateString(employee.getPassword(), "employee password", 0, 100);
+        } else {
+            if(employee.getPassword() != null){
+                validateString(employee.getPassword(), "employee password", 0, 100);
+            }
+        }
+    }
+
+    private static void validate(Employee employee) {
         if(employee == null) {
             throw new IllegalArgumentException("Illegal employee information");
         }
@@ -37,6 +48,5 @@ public class EmployeeValidator {
         validateString(employee.getCity(), "employee city", 0, 50);
         validateString(employee.getStreet(), "employee street", 0, 50);
         validateString(employee.getZipCode(), "employee zipcode", 0, 9);
-        validateString(employee.getPassword(), "employee password", 0, 100);
     }
 }

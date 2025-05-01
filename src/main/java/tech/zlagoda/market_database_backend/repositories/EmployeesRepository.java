@@ -8,8 +8,6 @@ import tech.zlagoda.market_database_backend.pojos.Employee;
 
 import java.util.List;
 
-import static tech.zlagoda.market_database_backend.validators.EmployeeValidator.validate;
-
 @Repository
 public class EmployeesRepository {
     @Autowired
@@ -48,7 +46,7 @@ public class EmployeesRepository {
     public void updateEmployee(Employee employee) {
         String sql = "UPDATE Employee SET empl_surname = ?, empl_name = ?, empl_patronymic = ?, empl_role = ?, " +
                 "salary = ?, date_of_birth = ?, date_of_start = ?, phone_number = ?, city = ?, street = ?, " +
-                "zip_code = ?, password = ? " +
+                "zip_code = ? " +
                 "WHERE id_employee = ?;";
         jdbc.update(sql,
                 employee.getSurname(),
@@ -62,8 +60,12 @@ public class EmployeesRepository {
                 employee.getCity(),
                 employee.getStreet(),
                 employee.getZipCode(),
-                employee.getPassword(),
                 employee.getIdEmployee());
+    }
+
+    public void updatePassword(String idEmployee, String password) {
+        String sql = "UPDATE Employee SET password = ? WHERE id_employee = ?;";
+        jdbc.update(sql, password, idEmployee);
     }
 
     public List<Employee> getEmployees(String surname, String role) {

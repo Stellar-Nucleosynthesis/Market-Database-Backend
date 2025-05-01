@@ -85,7 +85,7 @@ public class SpecificInfoRepository {
     public List<StoreProductInfo> getUnsoldWithNoDiscount(Date from){
         RowMapper<StoreProductInfo> rm = StoreProductInfo.getRowMapper();
         String sql = "SELECT DISTINCT sp.selling_price, sp.products_number, " +
-                    " p.product_name, p.manufacturer, p.characteristics, p.UPC" +
+                    " p.product_name, p.manufacturer, p.characteristics" +
                     " FROM Store_Product sp" +
                     " JOIN Product p ON sp.id_product = p.id_product" +
                     " WHERE sp.promotional_product = 0 AND NOT EXISTS (" +
