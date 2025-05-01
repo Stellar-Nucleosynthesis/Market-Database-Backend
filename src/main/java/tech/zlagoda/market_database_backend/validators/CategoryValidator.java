@@ -9,6 +9,6 @@ public class CategoryValidator {
         if (category == null) {
             throw new IllegalArgumentException("Illegal category information");
         }
-        validateString(category.getCategoryName(), "category name", 0, 50);
+        validateString(category.getCategoryName(), "category name", 1, 50);
     }
 }

@@ -9,8 +9,8 @@ public class ProductValidator {
         if (product == null) {
             throw new IllegalArgumentException("Illegal product information");
         }
-        validateString(product.getProductName(), "product name", 0, 50);
-        validateString(product.getManufacturer(), "product manufacturer", 0, 50);
-        validateString(product.getCharacteristics(), "product characteristics", 0, 100);
+        validateString(product.getProductName(), "product name", 1, 50);
+        validateString(product.getManufacturer(), "product manufacturer", 1, 50);
+        validateString(product.getCharacteristics(), "product characteristics", 1, 100);
     }
 }

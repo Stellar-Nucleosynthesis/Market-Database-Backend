@@ -9,6 +9,6 @@ public class CredentialsValidator {
         if (credentials == null) {
             throw new IllegalArgumentException("Illegal credentials");
         }
-        validateString(credentials.getUsername(), "username", 0, 50);
+        validateString(credentials.getUsername(), "username", 1, 50);
     }
 }

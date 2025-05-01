@@ -9,7 +9,7 @@ public class CustomerCardValidator {
         if (card == null) {
             throw new IllegalArgumentException("Illegal customer card information");
         }
-        validateString(card.getCardNumber(), "customer card number", 16, 16);
+        validateString(card.getCardNumber(), "customer card number", 1, 13);
         validateString(card.getSurname(), "customer surname", 1, 50);
         validateString(card.getName(), "customer name", 1, 50);
         validateString(card.getPatronymic(), "customer patronymic", 0, 50);

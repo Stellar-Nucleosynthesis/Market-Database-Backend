@@ -10,12 +10,8 @@ import static tech.zlagoda.market_database_backend.validators.ValidationUtils.*;
 public class EmployeeValidator {
     public static void validate(Employee employee, boolean requirePasswd){
         validate(employee);
-        if(requirePasswd){
-            validateString(employee.getPassword(), "employee password", 0, 100);
-        } else {
-            if(employee.getPassword() != null){
-                validateString(employee.getPassword(), "employee password", 0, 100);
-            }
+        if(requirePasswd || employee.getPassword() != null){
+            validateString(employee.getPassword(), "employee password", 1, 100);
         }
     }
 
@@ -23,10 +19,12 @@ public class EmployeeValidator {
         if(employee == null) {
             throw new IllegalArgumentException("Illegal employee information");
         }
-        validateString(employee.getIdEmployee(), "employee ID", 0, 10);
-        validateString(employee.getName(), "employee name", 0, 50);
-        validateString(employee.getSurname(), "employee surname", 0, 50);
-        validateString(employee.getPatronymic(), "employee patronymic", 0, 50);
+        validateString(employee.getIdEmployee(), "employee ID", 1, 10);
+        validateString(employee.getName(), "employee name", 1, 50);
+        validateString(employee.getSurname(), "employee surname", 1, 50);
+        if(employee.getPatronymic() != null){
+            validateString(employee.getPatronymic(), "employee patronymic", 0, 50);
+        }
         String role = employee.getRole();
         if(role == null || (!role.equals("Manager") && !role.equals("Cashier"))) {
             throw new IllegalArgumentException("Illegal employee role");
@@ -45,8 +43,8 @@ public class EmployeeValidator {
             throw new IllegalArgumentException("Illegal employee date of start");
         }
         validatePhoneNumber(employee.getPhoneNumber());
-        validateString(employee.getCity(), "employee city", 0, 50);
-        validateString(employee.getStreet(), "employee street", 0, 50);
-        validateString(employee.getZipCode(), "employee zipcode", 0, 9);
+        validateString(employee.getCity(), "employee city", 1, 50);
+        validateString(employee.getStreet(), "employee street", 1, 50);
+        validateString(employee.getZipCode(), "employee zipcode", 1, 9);
     }
 }

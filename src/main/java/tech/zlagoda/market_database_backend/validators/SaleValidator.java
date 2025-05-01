@@ -12,7 +12,7 @@ public class SaleValidator {
         if (sale == null) {
             throw new IllegalArgumentException("Illegal sale information");
         }
-        validateString(sale.getReceiptNumber(), "receipt number", 0, 10);
+        validateString(sale.getReceiptNumber(), "receipt number", 1, 10);
         if(sale.getProductNumber() < 0){
             throw new IllegalArgumentException("Illegal product number");
         }

@@ -10,8 +10,8 @@ public class StoreProductValidator {
         if (storeProduct == null) {
             throw new IllegalArgumentException("Illegal store product information");
         }
-        validateString(storeProduct.getUpc(), "store product UPC", 0, 12);
-        validateString(storeProduct.getUpcProm(), "store product UPC prom", 0, 12);
+        validateString(storeProduct.getUpc(), "store product UPC", 1, 12);
+        validateString(storeProduct.getUpcProm(), "store product UPC prom", 1, 12);
         validateDecimal(storeProduct.getSellingPrice(), "store product selling price", 0);
         if (storeProduct.getProductsNumber() <= 0) {
             throw new IllegalArgumentException("Illegal number of store products");
