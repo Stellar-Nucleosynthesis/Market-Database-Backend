@@ -1,15 +1,16 @@
 package tech.zlagoda.market_database_backend.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
 import tech.zlagoda.market_database_backend.pojos.Category;
 import tech.zlagoda.market_database_backend.pojos.RequestResponse;
 import tech.zlagoda.market_database_backend.services.CategoriesService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
@@ -42,7 +43,7 @@ public class CategoriesController {
         return ResponseEntity.status(HttpStatus.OK).body(new RequestResponse(id, true, null));
     }
 
-    @Secured("Manager")
+    @Secured({"Cashier", "Manager"})
     @GetMapping("/search")
     public ResponseEntity<List<Category>> getCategories(){
         return ResponseEntity.status(HttpStatus.OK).body(service.getCategories());

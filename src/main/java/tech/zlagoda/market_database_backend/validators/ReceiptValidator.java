@@ -1,12 +1,10 @@
 package tech.zlagoda.market_database_backend.validators;
 
-import tech.zlagoda.market_database_backend.pojos.Receipt;
-import tech.zlagoda.market_database_backend.pojos.Sale;
-
-import java.math.BigDecimal;
-
 import static tech.zlagoda.market_database_backend.validators.ValidationUtils.validateDecimal;
 import static tech.zlagoda.market_database_backend.validators.ValidationUtils.validateString;
+
+import tech.zlagoda.market_database_backend.pojos.Receipt;
+import tech.zlagoda.market_database_backend.pojos.Sale;
 
 public class ReceiptValidator {
     public static void validate(Receipt receipt) {
@@ -23,9 +21,13 @@ public class ReceiptValidator {
         validateDecimal(receipt.getVat(), "receipt VAT amount", 0);
         for(Sale sale : receipt.getSales()){
             SaleValidator.validate(sale);
-            if(receipt.getReceiptNumber().equals(sale.getReceiptNumber())){
-                throw new IllegalArgumentException("Conflicting receipt number");
-            }
+            if (sale.getReceiptNumber() != null &&
+					!sale.getReceiptNumber().isEmpty() &&
+					!receipt.getReceiptNumber().equals(sale.getReceiptNumber())) {
+				throw new IllegalArgumentException("Sale receipt number (" +
+						sale.getReceiptNumber() + ") doesn't match parent receipt number (" +
+						receipt.getReceiptNumber() + ")");
+			}
         }
     }
 }
