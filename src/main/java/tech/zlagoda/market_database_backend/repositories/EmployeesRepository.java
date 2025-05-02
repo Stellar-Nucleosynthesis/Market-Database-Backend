@@ -21,7 +21,7 @@ public class EmployeesRepository {
         String sql = "INSERT INTO Employee (id_employee, empl_surname, empl_name, empl_patronymic, " +
                 "empl_role, salary, date_of_birth, date_of_start, phone_number, city, street, zip_code, " +
                 "password) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         jdbc.update(sql,
                 employee.getIdEmployee(),
                 employee.getSurname(),

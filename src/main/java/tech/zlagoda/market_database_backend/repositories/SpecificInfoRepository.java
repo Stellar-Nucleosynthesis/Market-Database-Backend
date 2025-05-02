@@ -59,27 +59,27 @@ public class SpecificInfoRepository {
                 "FROM " +
                 "   Employee e " +
                 "WHERE " +
-                "   NOT EXISTS (" +
-                "       SELECT *" +
-                "       FROM Sale s" +
-                "       WHERE EXISTS (" +
-                "           SELECT *" +
+                "   NOT EXISTS ( " +
+                "       SELECT * " +
+                "       FROM Sale s " +
+                "       WHERE EXISTS ( " +
+                "           SELECT * " +
                 "           FROM Receipt r " +
-                "           WHERE r.receipt_number = s.receipt_number " +
-                "           AND r.id_employee = e.id_employee" +
-                "        )" +
-                "        AND EXISTS (" +
-                "           SELECT *" +
+                "           WHERE r.receipt_number = s.receipt_number  " +
+                "           AND r.id_employee = e.id_employee " +
+                "        ) " +
+                "        AND EXISTS ( " +
+                "           SELECT * " +
                 "           FROM Store_product sp " +
                 "           WHERE sp.UPC = s.UPC " +
-                "           AND sp.promotional_product = true" +
-                "       )" +
-                "   )" +
-                "   AND NOT EXISTS (" +
-                "   SELECT *" +
+                "           AND sp.promotional_product = true " +
+                "       ) " +
+                "   ) " +
+                "   AND NOT EXISTS ( " +
+                "   SELECT * " +
                 "   FROM Receipt r " +
                 "   WHERE r.id_employee = e.id_employee " +
-                "   AND r.receipt_number IS NULL" +
+                "   AND r.receipt_number IS NULL " +
                 ");";
         return jdbc.query(sql, rm);
     }
@@ -104,20 +104,20 @@ public class SpecificInfoRepository {
         RowMapper<StoreProductInfo> rm = StoreProductInfo.getRowMapper();
         String sql =
                 "SELECT DISTINCT sp.selling_price, sp.products_number, " +
-                "   p.product_name, p.manufacturer, p.characteristics, sp.UPC" +
-                "FROM Store_Product sp" +
-                "JOIN Product p ON sp.id_product = p.id_product" +
+                "   p.product_name, p.manufacturer, p.characteristics, sp.UPC " +
+                "FROM Store_Product sp " +
+                "JOIN Product p ON sp.id_product = p.id_product " +
                 "WHERE sp.promotional_product = 0 " +
                 "   AND sp.products_number <> 0 " +
-                "   AND NOT EXISTS (" +
-                "      SELECT *" +
-                "      FROM Sale s" +
-                "      WHERE s.UPC = sp.UPC AND EXISTS (" +
-                "          SELECT *" +
-                "          FROM Receipt r" +
-                "          WHERE r.receipt_number = s.receipt_number AND r.print_date > ?" +
-                "      )" +
-                "   )" +
+                "   AND NOT EXISTS ( " +
+                "      SELECT * " +
+                "      FROM Sale s " +
+                "      WHERE s.UPC = sp.UPC AND EXISTS ( " +
+                "          SELECT * " +
+                "          FROM Receipt r " +
+                "          WHERE r.receipt_number = s.receipt_number AND r.print_date > ? " +
+                "      ) " +
+                "   ) " +
                 "   AND NOT EXISTS ( " +
                 "      SELECT * " +
                 "      FROM Store_Product x " +
