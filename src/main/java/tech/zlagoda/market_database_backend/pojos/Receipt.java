@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Receipt {
     private String receiptNumber;
     private String idEmployee;
     private String cardNumber;
-    private Date printDate;
+    private Timestamp printDate;
     private BigDecimal sumTotal;
     private BigDecimal vat;
 
@@ -41,11 +42,11 @@ public class Receipt {
         this.cardNumber = cardNumber;
     }
 
-    public Date getPrintDate() {
+    public Timestamp getPrintDate() {
         return printDate;
     }
 
-    public void setPrintDate(Date printDate) {
+    public void setPrintDate(Timestamp printDate) {
         this.printDate = printDate;
     }
 
@@ -79,7 +80,7 @@ public class Receipt {
             receipt.setReceiptNumber(r.getString("receipt_number"));
             receipt.setIdEmployee(r.getString("id_employee"));
             receipt.setCardNumber(r.getString("card_number"));
-            receipt.setPrintDate(r.getDate("print_date"));
+            receipt.setPrintDate(r.getTimestamp("print_date"));
             receipt.setSumTotal(r.getBigDecimal("sum_total"));
             receipt.setVat(r.getBigDecimal("vat"));
             return receipt;

@@ -94,7 +94,7 @@ public class SpecificInfoRepository {
                     "       WHERE s.UPC = sp.UPC AND NOT EXISTS (" +
                     "              SELECT *" +
                     "              FROM Receipt r" +
-                    "              WHERE r.receipt_number = s.receipt_number AND r.print_date < ?" +
+                    "              WHERE r.receipt_number = s.receipt_number AND r.print_date > ?" +
                     "               )" +
                     " );";
         return jdbc.query(sql, rm, from);
