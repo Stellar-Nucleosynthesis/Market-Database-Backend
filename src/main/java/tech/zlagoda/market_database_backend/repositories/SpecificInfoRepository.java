@@ -74,29 +74,43 @@ public class SpecificInfoRepository {
 
     public List<EmployeeAverageSaleInfo> getAverageCashierSale() {
         RowMapper<EmployeeAverageSaleInfo> rm = EmployeeAverageSaleInfo.getRowMapper();
-        String sql = "SELECT *, AVG(s.selling_price * s.product_number) AS average_sale" +
-                    " FROM Employee e" +
-                    " JOIN Receipt r ON e.id_employee = r.id_employee" +
-                    " JOIN Sale s ON r.receipt_number = s.receipt_number" +
-                    " GROUP BY e.id_employee;";
+        String sql =
+                "SELECT *, AVG(receipt_sum) AS average_sale " +
+                "FROM ( " +
+                "    SELECT *, SUM(s.selling_price * s.product_number) AS receipt_sum " +
+                "    FROM Employee e " +
+                "    JOIN Receipt r ON e.id_employee = r.id_employee " +
+                "    JOIN Sale s ON r.receipt_number = s.receipt_number " +
+                "    WHERE e.empl_role = 'Cashier' " +
+                "    GROUP BY e.id_employee, r.receipt_number " +
+                ") AS sub " +
+                "GROUP BY sub.id_employee;";
         return jdbc.query(sql, rm);
     }
 
     public List<StoreProductInfo> getUnsoldWithNoDiscount(Date from){
         RowMapper<StoreProductInfo> rm = StoreProductInfo.getRowMapper();
         String sql = "SELECT DISTINCT sp.selling_price, sp.products_number, " +
-                    " p.product_name, p.manufacturer, p.characteristics" +
+                    " p.product_name, p.manufacturer, p.characteristics, sp.UPC" +
                     " FROM Store_Product sp" +
                     " JOIN Product p ON sp.id_product = p.id_product" +
-                    " WHERE sp.promotional_product = 0 AND NOT EXISTS (" +
+                    " WHERE sp.promotional_product = 0 " +
+                    " AND sp.products_number <> 0 " +
+                    " AND NOT EXISTS (" +
                     "       SELECT *" +
                     "       FROM Sale s" +
-                    "       WHERE s.UPC = sp.UPC AND NOT EXISTS (" +
+                    "       WHERE s.UPC = sp.UPC AND EXISTS (" +
                     "              SELECT *" +
                     "              FROM Receipt r" +
                     "              WHERE r.receipt_number = s.receipt_number AND r.print_date > ?" +
-                    "               )" +
-                    " );";
+                    "       )" +
+                    " )" +
+                    " AND NOT EXISTS ( " +
+                    "       SELECT * " +
+                    "       FROM Store_Product x " +
+                    "       WHERE x.UPC_prom = sp.UPC " +
+                    "       AND x.promotional_product = 1 " +
+                    "  );";
         return jdbc.query(sql, rm, from);
     }
 }
