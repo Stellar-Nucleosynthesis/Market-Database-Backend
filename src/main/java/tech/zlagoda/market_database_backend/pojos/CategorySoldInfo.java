@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class CategorySoldInfo {
     private int categoryNumber;
     private String categoryName;
+    private String productName;
 
     private int totalSold;
 
@@ -28,11 +29,16 @@ public class CategorySoldInfo {
 
     public void setTotalSold(int totalSold) { this.totalSold = totalSold; }
 
+    public String getProductName() { return productName; }
+
+    public void setProductName(String productName) { this.productName = productName; }
+
     public static RowMapper<CategorySoldInfo> getRowMapper() {
         return (r, i) -> {
             CategorySoldInfo info = new CategorySoldInfo();
             info.setCategoryNumber(r.getInt("category_number"));
             info.setCategoryName(r.getString("category_name"));
+            info.setProductName(r.getString("product_name"));
             info.setTotalSold(r.getInt("total_sold"));
             return info;
         };
