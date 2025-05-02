@@ -67,7 +67,8 @@ public class StoreProductsRepository {
 
     public StoreProductInfo getStoreProductInfo(String upc) {
         RowMapper<StoreProductInfo> storeProductInfoRowMapper = StoreProductInfo.getRowMapper();
-        String sql = "SELECT DISTINCT selling_price, products_number, product_name, manufacturer, characteristics" +
+        String sql = "SELECT DISTINCT selling_price, products_number, product_name, " +
+                    "manufacturer, characteristics, upc" +
                     " FROM Store_Product, Product" +
                     " WHERE UPC = ? AND Store_Product.id_product = Product.id_product;";
         return jdbc.queryForObject(sql, storeProductInfoRowMapper, upc);

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public class StoreProductInfo {
     private BigDecimal sellingPrice;
     private int productsNumber;
+    private String upc;
     private String productName;
     private String manufacturer;
     private String characteristics;
@@ -29,6 +30,14 @@ public class StoreProductInfo {
 
     public String getProductName() {
         return productName;
+    }
+
+    public String getUpc() {
+        return upc;
+    }
+
+    public void setUpc(String upc) {
+        this.upc = upc;
     }
 
     public void setProductName(String productName) {
@@ -56,6 +65,7 @@ public class StoreProductInfo {
             StoreProductInfo storeProductInfo = new StoreProductInfo();
             storeProductInfo.setSellingPrice(r.getBigDecimal("selling_price"));
             storeProductInfo.setProductsNumber(r.getInt("products_number"));
+            storeProductInfo.setUpc(r.getString("upc"));
             storeProductInfo.setProductName(r.getString("product_name"));
             storeProductInfo.setManufacturer(r.getString("manufacturer"));
             storeProductInfo.setCharacteristics(r.getString("characteristics"));

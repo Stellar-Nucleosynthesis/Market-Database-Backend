@@ -74,7 +74,7 @@ public class SpecificInfoRepository {
 
     public List<EmployeeAverageSaleInfo> getAverageCashierSale() {
         RowMapper<EmployeeAverageSaleInfo> rm = EmployeeAverageSaleInfo.getRowMapper();
-        String sql = "SELECT *, AVG(s.selling_price) AS average_sale" +
+        String sql = "SELECT *, AVG(s.selling_price * s.product_number) AS average_sale" +
                     " FROM Employee e" +
                     " JOIN Receipt r ON e.id_employee = r.id_employee" +
                     " JOIN Sale s ON r.receipt_number = s.receipt_number" +
